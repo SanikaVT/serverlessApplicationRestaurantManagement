@@ -23,19 +23,15 @@ export default function Question() {
           username: obj.username,
           email: obj.attributes.email,
         };
-        console.log(obj);
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("IsQuestion", false);
       }));
 
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log("u1: ", user);
     const users = await db.collection("users");
     const userData = await users.where("username", "==", user.username).get();
-    console.log("err", userData);
 
     userData.forEach((doc) => {
-      console.log("data", doc.data());
       dbUser = doc.data();
     });
     if (dbUser) {
@@ -57,7 +53,6 @@ export default function Question() {
       const userData = await users.where("username", "==", user.username).get();
 
       userData.forEach((doc) => {
-        console.log("data", doc.data());
         dbUser = doc.data();
       });
 
@@ -81,11 +76,9 @@ export default function Question() {
           role: role,
         };
 
-        console.log("user:", user);
         db.collection("users")
           .add(user)
           .then((doc) => {
-            console.log("data Submitted Successfully.");
             localStorage.setItem("IsQuestion", true);
             localStorage.setItem("Role", role);
 
@@ -101,7 +94,6 @@ export default function Question() {
 
   return (
     <>
-      {console.log("local :", JSON.parse(localStorage.getItem("user")))}
       <div className="all-content-center">
         <div className="container">
           <div className="center-box">

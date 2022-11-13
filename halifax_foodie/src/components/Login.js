@@ -14,13 +14,11 @@ export default function Login() {
     // history.push("/Dashboard");
     //setisValid(true);
     e.preventDefault();
-    console.log("password", password);
 
     Auth.signIn({
       username: username,
       password: password,
     }).then(async (obj) => {
-      console.log("a", obj);
       // setuserDetails(JSON.stringify(a))
       localStorage.setItem("user", JSON.stringify(obj));
       history.push("/");
@@ -40,7 +38,6 @@ export default function Login() {
 
     // user.authenticateUser(authDetails, {
     //     onSuccess: (data) => {
-    //         console.log("On Success:", data)
     //         history.push("/dashboard")
     //     },
     //     onFailure: (err) => {
@@ -48,7 +45,6 @@ export default function Login() {
     //         seterror(err.message)
     //     },
     //     newPasswordRequired: (data) => {
-    //         console.log("new Password required:", data)
     //     },
     // });
   };

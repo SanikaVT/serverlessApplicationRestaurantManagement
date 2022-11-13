@@ -40,10 +40,6 @@ export class orderPage extends Component {
         }
       )
       .then((resposne) => {
-        console.log(resposne);
-
-        console.log(resposne.data[0]["food"]);
-        console.log(resposne.data[0]["recommandation"]);
         this.setState({
           food: resposne.data[0]["food"],
           recommandation: resposne.data[0]["recommandation"],
@@ -98,7 +94,6 @@ export class orderPage extends Component {
         }
       )
       .then((resposne) => {
-        console.log(resposne);
         if (resposne) {
           alert("Ordered " + row["foodName"] + " Successfully");
           this.props.history.push("/giveratings");

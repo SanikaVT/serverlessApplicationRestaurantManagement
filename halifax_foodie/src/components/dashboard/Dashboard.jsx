@@ -1,14 +1,33 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import { Col, Row, Button } from "react-bootstrap";
 import LexChat from "react-lex";
 import { useState } from "react";
+import {Auth} from 'aws-amplify'
 
 export default function Dashboard() {
   // const [Data, setData] = useState()
   const role = localStorage.getItem("Role");
   // const role = localStorage.getItem("Role");
   const history = useHistory();
+  const [currentUser,setCurrentUser] = useState(null)
+
+  useEffect(() => {
+      getCurrentUser()
+  }, [])
+
+  async function getCurrentUser() {
+      try {
+          const user = await Auth.currentAuthenticatedUser({
+              bypassCache: false
+          })
+          setCurrentUser({...user.attributes, role: user.storage?.getItem('Role')});
+          localStorage.setItem('currentUser', JSON.stringify({...user.attributes, role: user.storage?.getItem('Role')}))
+      } catch(error) {
+          history.push('/')
+      }
+  }
+
   //   var role;
   //   var isCustomer;
   //   useEffect(() => {
@@ -18,13 +37,11 @@ export default function Dashboard() {
   //     } else {
   //       isCustomer = false;
   //     }
-  //     console.log("isCust", isCustomer);
   //   }, []);
 
   // const getUseDetails = async () => {
   //     await axios.get('https://tutorial4-api.herokuapp.com/api/users')
   //         .then((response) => {
-  //             console.log("response data: ", response.data.data)
   //             setData(response.data.data)
   //             setAllData(response.data.data)
   //         })

@@ -35,18 +35,11 @@ export default function USignUp() {
     }
     const onSubmit = (event) => {
         event.preventDefault();
-        console.log("email", email)
-        console.log("password", password)
-        console.log("role", role)
-        console.log("securityQuestion", securityQuestion)
-        console.log("key", key)
-        console.log("string", string)
 
         // UserPool.signUp(email, password, [], null, (err, data) => {
         //     if (err) {
         //         console.error(err);
         //     }
-        //     console.log(data)
         // });
 
         // axios.post("https://hbdfzpguzakxzaxrhq3lxjluty0vyzwr.lambda-url.us-east-1.on.aws/", data)

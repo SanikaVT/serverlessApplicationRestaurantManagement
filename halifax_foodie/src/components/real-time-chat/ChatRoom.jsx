@@ -9,9 +9,8 @@ export default function ChatRoom({currentUser, chatWith}) {
 
     const [formValue, setFormValue] = useState("");
     const sentBy = currentUser.role === 'Customer' ? currentUser.email : 'restaurant'
-    const sentTo = chatWith || 'restaurant'
+    const sentTo = chatWith ? chatWith.email : 'restaurant'
 
-    console.log([sentBy, sentTo])
     const messagesRef = db.collection("messages");
     const query = messagesRef.where('sentBy', 'in', [sentBy, sentTo]).orderBy("createdAt").limit(25);
     const [messages] = useCollectionData(query, { idField: "id" });
@@ -58,7 +57,7 @@ export default function ChatRoom({currentUser, chatWith}) {
                 value={formValue}
                 onChange={(e) => setFormValue(e.target.value)}/>
 
-                <Button variant="contained" color="success" disabled={!formValue}>
+                <Button style={{marginLeft:'10px'}} type="submit" variant="contained" color="success" disabled={!formValue}>
                     Send
                 </Button>
         </form>

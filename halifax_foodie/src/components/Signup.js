@@ -20,8 +20,6 @@ export default function Signup() {
     // history.push("/Dashboard");
     //setisValid(true)
     e.preventDefault();
-    console.log("email", email);
-    console.log("password", password);
 
     if (!isSignedUp) {
       Auth.signUp({
@@ -55,7 +53,6 @@ export default function Signup() {
     //     else {
     //         seterror("Username/Password Not valid")
     //     }
-    //     console.log(response);
     //   }, (error) => {
     //     console.log(error);
     //   });
@@ -64,7 +61,6 @@ export default function Signup() {
     //         console.error(err);
     //         seterror(err.message)
     //     }
-    //     console.log(data)
     // });
   };
 
