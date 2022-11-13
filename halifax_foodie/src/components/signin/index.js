@@ -33,19 +33,15 @@ export default function SignIn() {
     e.preventDefault();
     setFormError(validate(formValue));
     if (errori === 0) {
-      console.log("form values = " + formValue.email);
       const form_data = {
         email: formValue.email,
         password: formValue.password,
       };
       localStorage.setItem("email", formValue.email);
-      console.log(form_data);
       axios
         .post("API_CALL", form_data)
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
-            console.log(response.data.status);
             window.location.href = "/dashboard";
           }
         })

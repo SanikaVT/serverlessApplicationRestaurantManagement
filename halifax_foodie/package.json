@@ -16,10 +16,17 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-firebase-hooks": "^2.2.0",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.1",
     "sass": "^1.56.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@google-cloud/pubsub": "^2.16.1",
+    "amazon-cognito-identity-js": "^5.0.4",
+    "bootstrap": "^5.0.1",
+    "react-bootstrap": "^1.6.1",
+    "react-lex": "^1.2.1",
+    "react-lex-plus": "^1.2.3",
+    "reactstrap": "^8.9.0"
   },
   "scripts": {
     "start": "react-scripts start",
