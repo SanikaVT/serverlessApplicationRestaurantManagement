@@ -10,7 +10,7 @@ import { Select, MenuItem, InputLabel, FormHelperText, FormControl } from "@mui/
 import axios from "axios";
 
 // import { Auth } from "aws-amplify";
-import UserPool from "../../UserPool";
+// import UserPool from "../../UserPool";
 
 export default function USignUp() {
     const [name, setName] = useState("");
@@ -42,12 +42,12 @@ export default function USignUp() {
         console.log("key", key)
         console.log("string", string)
 
-        UserPool.signUp(email, password, [], null, (err, data) => {
-            if (err) {
-                console.error(err);
-            }
-            console.log(data)
-        });
+        // UserPool.signUp(email, password, [], null, (err, data) => {
+        //     if (err) {
+        //         console.error(err);
+        //     }
+        //     console.log(data)
+        // });
 
         axios.post("https://hbdfzpguzakxzaxrhq3lxjluty0vyzwr.lambda-url.us-east-1.on.aws/", data)
             .then((response) => response.json())
