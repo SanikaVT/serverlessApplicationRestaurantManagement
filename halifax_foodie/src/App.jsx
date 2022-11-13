@@ -1,27 +1,58 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignIn from "./components/signin";
 import USignUp from "./components/signup/SignUp";
-import LogOut from "./components/logout";
-import Dashboard from "./components/dashboard";
 import RealTimeChat from './components/real-time-chat/RealTimeChat'
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import Signup from "./components/Signup";
+import Dashboard from "./Dashboard";
+import Order from "./components/orderPage";
+// import UserPool from './UserPool'
 
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import "../src/main.css";
+import Question from "./components/Question";
 import './App.css'
 
 
 function App() {
   return (
-    <div className="App">
-      <Router>
+    // <div className="App">
+    <>
+      {/* <Router>
         <Routes>
-          <Route path="/signup" element={<USignUp />}></Route>
-          <Route path="/" element={<SignIn />}></Route>
-          <Route path="/logout" element={<LogOut />}></Route>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
-          <Route path="/chat" element={<RealTimeChat />}></Route>
+          
         </Routes>
-      </Router>
-    </div>
+      </Router> */}
+
+
+      {console.log(">>>", JSON.parse(localStorage.getItem("IsQuestion")))}
+      {!JSON.parse(localStorage.getItem("IsQuestion")) ? (
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Question} />
+            {/* <Route exact path="/dashboard" component={Dashboard} /> */}
+          </Switch>
+        </Router>
+      ) : (
+        <Router>
+          <Switch>
+          {/* <Route path="/signup" element={<USignUp />}></Route>
+          <Route path="/" element={<SignIn />}></Route> */}
+          <Route path="/chat" element={<RealTimeChat />}></Route>
+            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/register" component={Signup} />
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/question" component={Question} />
+            <Route exact path="/order" component={Order} />
+          </Switch>
+        </Router>
+      )}
+    {/* </div> */}
+    </>
   );
 }
-export default App;
+// export default App;
+
+export default withAuthenticator(App);
+

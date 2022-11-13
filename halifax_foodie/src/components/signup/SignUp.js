@@ -49,14 +49,14 @@ export default function USignUp() {
         //     console.log(data)
         // });
 
-        axios.post("https://hbdfzpguzakxzaxrhq3lxjluty0vyzwr.lambda-url.us-east-1.on.aws/", data)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        // axios.post("https://hbdfzpguzakxzaxrhq3lxjluty0vyzwr.lambda-url.us-east-1.on.aws/", data)
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         console.log('Success:', data);
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
 
     };
     const card = {

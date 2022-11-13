@@ -7,7 +7,7 @@ import { Auth } from "aws-amplify";
 import ChatRoom from "./ChatRoom";
 import './RealTimeChat.scss'
 import db from '../../firebase'
-import {useNavigate} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 
 import { CardContent, Card, Typography, Grid } from "@mui/material";
 
@@ -15,7 +15,8 @@ export default function RealTimeChat({sentBy}) {
     const [currentUser, setCurrentUser] = useState(null)
     const [customerList, setCustomerList] = useState([])
     const [selectedCustomer, setSelectedCustomer] = useState(null)
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
+    const history = useHistory();
 
     useEffect(() => {
         getCurrentUser()
@@ -37,7 +38,7 @@ export default function RealTimeChat({sentBy}) {
                 });
             }
         } catch(error) {
-            navigate('/')
+            history.push('/')
         }
     }
 
