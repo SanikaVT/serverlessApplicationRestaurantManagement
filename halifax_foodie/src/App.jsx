@@ -39,11 +39,12 @@ function App() {
           <Switch>
           {/* <Route path="/signup" element={<USignUp />}></Route>
           <Route path="/" element={<SignIn />}></Route> */}
-          <Route path="/chat" element={<RealTimeChat />}></Route>
+          {/* <Route path="/chat" element={<RealTimeChat />}></Route> */}
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/register" component={Signup} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/question" component={Question} />
+            <Route exact path="/chat" component={RealTimeChat} />
             <Route exact path="/order" component={Order} />
           </Switch>
         </Router>
