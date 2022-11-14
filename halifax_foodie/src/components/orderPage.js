@@ -27,7 +27,7 @@ export class orderPage extends Component {
     // };
     axios
       .post(
-        "https://jri5nnrvrhxc3sdgt6rd6trnyi0txeub.lambda-url.us-east-1.on.aws/",
+        "https://su4w77rtho2e6y5g5ursrddecq0zikbc.lambda-url.us-east-1.on.aws/",
 
         {
           headers: {
@@ -46,59 +46,28 @@ export class orderPage extends Component {
         });
       });
   }
-  orderitem(row) {
-    //   const url =
-    //     "https://p23cps34y5cqlu2j2wbsowojtu0veure.lambda-url.us-east-1.on.aws/?" +
-    //     "foodName" +
-    //     "=" +
-    //     row["foodName"] +
-    //     "&" +
-    //     "foodId" +
-    //     "=" +
-    //     row["foodId"] +
-    //     "&" +
-    //     "price=" +
-    //     row["price"] +
-    //     "&" +
-    //     "ingredient=" +
-    //     row["ingredient"] +
-    //     "&" +
-    //     "userName=" +
-    //     this.state.user.username;
-    //   axios.post(url).then((resposne) => {
-    //     if (resposne) {
-    //       alert("Ordered " + row["foodName"] + " Successfully");
-    //       this.props.history.push("/giveratings");
-    //     }
-    //   });
+  async orderitem(row) {
     const body = {
       foodName: row["foodName"],
       foodId: row["foodId"],
       price: row["price"],
       ingredient: row["ingredient"],
-      userName: this.state.user.userName,
+      userName: this.state.user.username,
     };
 
-    axios
-      .post(
-        "https://p23cps34y5cqlu2j2wbsowojtu0veure.lambda-url.us-east-1.on.aws/",
+    try {
+      let result = await axios.post(
+        "https://prm6clmwohmnq3ouerds6uhzya0gppjj.lambda-url.us-east-1.on.aws/",
 
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "http://localhost:3000",
-
-            "Access-Control-Allow-Credentials": "true",
-          },
-
-          body: JSON.stringify(body),
-        }
-      )
-      .then((resposne) => {
-        if (resposne) {
-          alert("Ordered " + row["foodName"] + " Successfully");
-          this.props.history.push("/giveratings");
-        }
-      });
+        JSON.stringify(body),
+        { headers: { "Content-Type": "application/json" } }
+      );
+      console.log("op", result);
+      alert("Ordered " + row["foodName"] + " Successfully");
+      this.props.history.push("/giveratings");
+    } catch (error) {
+      console.error(error.response.data); // NOTE - use "error.response.data` (not "error")
+    }
   }
 
   render() {

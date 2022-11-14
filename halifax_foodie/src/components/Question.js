@@ -120,7 +120,7 @@ export default function Question() {
                   {setQuestion ? (
                     <h1>2nd Factor Authentication</h1>
                   ) : (
-                    <h1>Set Up Multi-Factor Authentication</h1>
+                    <h1>Set up 2nd Factor Authentication</h1>
                   )}
                 </div>
 
