@@ -7,6 +7,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Signup from "./components/Signup";
 import Dashboard from "./Dashboard";
 import Order from "./components/orderPage";
+import giveRating from "./components/giveRating";
 // import UserPool from './UserPool'
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
@@ -44,6 +45,7 @@ function App() {
             <Route exact path="/register" component={Signup} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/question" component={Question} />
+            <Route exact path="/giveratings" component={giveRating} />
             <Route exact path="/chat" component={RealTimeChat} />
             <Route exact path="/order" component={Order} />
           </Switch>
