@@ -16,7 +16,6 @@ Amplify.configure(config);
 //     <App />
 //   </React.StrictMode>
 // );
-
 ReactDOM.render(
   <React.StrictMode>
     <App />
