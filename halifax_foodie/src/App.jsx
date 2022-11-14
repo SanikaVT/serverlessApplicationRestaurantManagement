@@ -5,7 +5,7 @@ import USignUp from "./components/signup/SignUp";
 import RealTimeChat from './components/real-time-chat/RealTimeChat'
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Signup from "./components/Signup";
-import Dashboard from "./Dashboard";
+import Dashboard from "./components/dashboard/Dashboard";
 import Order from "./components/orderPage";
 import giveRating from "./components/giveRating";
 // import UserPool from './UserPool'
@@ -27,7 +27,6 @@ function App() {
       </Router> */}
 
 
-      {console.log(">>>", JSON.parse(localStorage.getItem("IsQuestion")))}
       {!JSON.parse(localStorage.getItem("IsQuestion")) ? (
         <Router>
           <Switch>
@@ -58,4 +57,3 @@ function App() {
 // export default App;
 
 export default withAuthenticator(App);
-
