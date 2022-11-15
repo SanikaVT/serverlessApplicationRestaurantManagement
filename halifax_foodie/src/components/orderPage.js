@@ -17,14 +17,8 @@ export class orderPage extends Component {
 
   componentDidMount() {
     var body = {
-      body: "c5473fdf-104f-4231-9198-ed8f71c50222",
+      body: this.state.user.username,
     };
-    // const headers = {
-    //   "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    //   "Access-Control-Allow-Headers": "Content-Type",
-    //   "Access-Control-Allow-Origin": "*",
-    //   "Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,DELETE,PATCH",
-    // };
     axios
       .post(
         "https://su4w77rtho2e6y5g5ursrddecq0zikbc.lambda-url.us-east-1.on.aws/",

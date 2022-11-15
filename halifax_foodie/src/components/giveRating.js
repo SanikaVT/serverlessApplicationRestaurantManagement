@@ -39,21 +39,6 @@ export class giveRating extends Component {
     }
   };
 
-  //   event.preventDefault();
-  //   const ratings = this.state.rating;
-  //   const username = this.state.user.username;
-  //   const url =
-  //     "https://ogzkp4mnok7tvtdcjeadoxhnba0fwdkh.lambda-url.us-east-1.on.aws?username=" +
-  //     username +
-  //     "&ratings=" +
-  //     ratings;
-  //   axios.post(url).then((resposne) => {
-  //     console.log(resposne);
-  //     this.cancel();
-  //   });
-  //   console.log("text", this.state.rating);
-  // };
-
   cancel = (e) => {
     this.props.history.push("/order");
   };
