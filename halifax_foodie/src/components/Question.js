@@ -95,12 +95,13 @@ export default function Question() {
 
       await axios
         .post(
-          "https://r4yqs2ksmymexq65kgw2todzbe0nkhll.lambda-url.us-east-1.on.aws/",
+          "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/thirdfactor",
 
           {
             headers: {
               "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Credentials": "true",
+              "Content-Type": "application/json",
             },
             crossDomain: true,
             body: JSON.stringify(body),
@@ -148,7 +149,7 @@ export default function Question() {
 
       try {
         let result = await axios.post(
-          "https://ekzicai3smqszlizlu7celxqum0qekkj.lambda-url.us-east-1.on.aws/",
+          "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addcipher",
 
           JSON.stringify(body),
           { headers: { "Content-Type": "application/json" } }

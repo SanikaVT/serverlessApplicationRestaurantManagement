@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Row, Button } from "react-bootstrap";
 import axios from "axios";
+import { useLocation } from "react-router";
 export class giveRating extends Component {
   constructor(props) {
     super(props);
@@ -9,9 +10,9 @@ export class giveRating extends Component {
     this.state = {
       user: JSON.parse(localStorage.getItem("user")),
       rating: "",
+      foodId: props.location.state.foodId,
     };
   }
-
   onValueChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -20,15 +21,15 @@ export class giveRating extends Component {
 
   saveItem = async (event) => {
     event.preventDefault();
-
     const body = {
       ratings: this.state.rating,
       username: this.state.user.username,
+      foodId: this.state.foodId,
     };
 
     try {
       let result = await axios.post(
-        "https://ogzkp4mnok7tvtdcjeadoxhnba0fwdkh.lambda-url.us-east-1.on.aws/",
+        "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addreview",
 
         JSON.stringify(body),
         { headers: { "Content-Type": "application/json" } }
@@ -46,7 +47,7 @@ export class giveRating extends Component {
     return (
       <Row className="rating-content">
         <div>
-          <h2>Please give your feedback</h2>
+          <h2>Please give your review</h2>
         </div>
         <div>
           <input

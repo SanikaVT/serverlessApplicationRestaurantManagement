@@ -1,13 +1,12 @@
 import React from "react";
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SignIn from "./components/signin";
-import USignUp from "./components/signup/SignUp";
 import RealTimeChat from './components/real-time-chat/RealTimeChat'
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Signup from "./components/Signup";
 import Dashboard from "./components/dashboard/Dashboard";
 import Order from "./components/orderPage";
 import giveRating from "./components/giveRating";
+import RecipeUpload from "./components/RecipeUpload";
 // import UserPool from './UserPool'
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
@@ -47,6 +46,8 @@ function App() {
             <Route exact path="/giveratings" component={giveRating} />
             <Route exact path="/chat" component={RealTimeChat} />
             <Route exact path="/order" component={Order} />
+            <Route exact path="/recipeupload" component={RecipeUpload} />
+
           </Switch>
         </Router>
       )}
