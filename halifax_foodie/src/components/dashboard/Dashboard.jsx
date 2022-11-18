@@ -135,11 +135,6 @@ export default function Dashboard() {
             </Button>
           )}
         </Col>
-        {/* <Col>
-          <Button className="add-button" onClick={() => pubsub()}>
-            One to One Chat
-          </Button>
-        </Col> */}
         <Col>
           <Button className="add-button" onClick={() => logout()}>
             Logout
@@ -164,55 +159,6 @@ export default function Dashboard() {
           "Hello, how can I help? You can say things like 'help' to get more info"
         }
       />
-      {/* <div className="all-content-center">
-                <div className="ccontainer">
-                    <div className="center-box">
-                        <div className="main-dbox">
-                            <div className="heading-text">
-                                <h3>Hello</h3><br />
-                                
-                            </div>
-                            <h2>Email</h2>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
-      {/* <div className="mt-5 text-center">
-                <form>
-                Search:<input  type = "text" name="search" onChange = {(e)=>{onFilter(e)}} />
-                </form>
-            </div>
-            <div className="w-80 m-5">
-                <Table>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Picture</th>
-                            <th>Link</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            Data?.map((userData) => {
-                                return (
-                                    <tr class="cursor-pointer" onClick={() => viewProfile(userData.id)}>
-                                        <td>{userData.title}</td>
-                                        <td>{userData.firstName}</td>
-                                        <td>{userData.lastName}</td>
-                                        <td>{userData.email}</td>
-                                        <td><img src={userData.picture}></img></td>
-                                        <td><button onClick={() => viewProfile(userData.id)}>View</button></td>
-                                    </tr>)
-
-                            })
-                        }
-                    </tbody>
-                </Table>
-            </div>
- */}
     </div>
   );
 }

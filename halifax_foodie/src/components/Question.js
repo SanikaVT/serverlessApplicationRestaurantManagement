@@ -172,9 +172,7 @@ export default function Question() {
               <form onSubmit={(e) => onSubmitForm(e)}>
                 <div className="mb-5">
                   {setQuestion ? (
-                    <div>
-                      <span>Role: {role}</span>
-                    </div>
+                    <div></div>
                   ) : (
                     <div>
                       <div>
