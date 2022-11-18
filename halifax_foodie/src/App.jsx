@@ -2,7 +2,6 @@ import React from "react";
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RealTimeChat from './components/real-time-chat/RealTimeChat'
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import Signup from "./components/Signup";
 import Dashboard from "./components/dashboard/Dashboard";
 import Order from "./components/orderPage";
 import giveRating from "./components/giveRating";
@@ -35,13 +34,8 @@ function App() {
         </Router>
       ) : (
         <Router>
-          <Switch>
-          {/* <Route path="/signup" element={<USignUp />}></Route>
-          <Route path="/" element={<SignIn />}></Route> */}
-          {/* <Route path="/chat" element={<RealTimeChat />}></Route> */}
+          <Switch>       
             <Route exact path="/" component={Dashboard} />
-            <Route exact path="/register" component={Signup} />
-            <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/question" component={Question} />
             <Route exact path="/giveratings" component={giveRating} />
             <Route exact path="/chat" component={RealTimeChat} />

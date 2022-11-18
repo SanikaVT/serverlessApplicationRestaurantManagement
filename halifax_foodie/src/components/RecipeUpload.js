@@ -4,6 +4,8 @@ import axios from "axios";
 function RecipeUpload() {
   const [uploadedFileName, setUploadedFileName] = useState();
   const [fileContent, setFileContent] = useState("");
+  const [title, setTitle] = useState("");
+  const [ingredients, setIngredients] = useState("");
 
   const inputRef = useRef();
 
@@ -29,6 +31,34 @@ function RecipeUpload() {
         }
       );
       console.log(result);
+    } catch (error) {
+      console.error(error); // NOTE - use "error.response.data` (not "error")
+    }
+  };
+
+  const exportRecipe = async () => {
+    const body = {
+      filename: uploadedFileName,
+    };
+
+    try {
+      let result = await axios.post(
+        "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/exportrecipe",
+
+        JSON.stringify(body),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(uploadedFileName);
+      console.log(result.data.body);
+
+      result = JSON.parse(result.data.body);
+      console.log(result);
+      setTitle("Title: " + result[0].title);
+      setIngredients("Ingredients: " + result[0].ingredients);
     } catch (error) {
       console.error(error); // NOTE - use "error.response.data` (not "error")
     }
@@ -67,12 +97,29 @@ function RecipeUpload() {
       <div></div>
 
       <div className="m-3">
-        <span>{fileContent}</span>
+        <span>File Content: {fileContent}</span>
       </div>
 
       <button className="m-3" onClick={handleSubmit}>
         Submit
       </button>
+      <div></div>
+
+      <button className="m-3" onClick={exportRecipe}>
+        Extract Title and Ingredients
+      </button>
+
+      <div className="m-3">
+        <span>
+          <b>{title}</b>
+        </span>
+      </div>
+
+      <div className="m-3">
+        <span>
+          <b>{ingredients} </b>
+        </span>
+      </div>
     </div>
   );
 }
