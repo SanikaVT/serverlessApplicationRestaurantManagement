@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Container, Col, Row, Button } from "react-bootstrap";
 import { Card } from "react-bootstrap";
+import { useLocation } from "react-router";
 import axios from "axios";
 import "./order.css";
 
@@ -15,17 +16,19 @@ export class orderPage extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     var body = {
       body: this.state.user.username,
     };
-    axios
+
+    await axios
       .post(
-        "https://su4w77rtho2e6y5g5ursrddecq0zikbc.lambda-url.us-east-1.on.aws/",
+        "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/fetchfood",
 
         {
           headers: {
-            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
 
             "Access-Control-Allow-Credentials": "true",
           },
@@ -33,10 +36,11 @@ export class orderPage extends Component {
           body: JSON.stringify(body),
         }
       )
-      .then((resposne) => {
+      .then((response) => {
+        response = JSON.parse(response.data.body);
         this.setState({
-          food: resposne.data[0]["food"],
-          recommandation: resposne.data[0]["recommandation"],
+          food: response[0].food,
+          recommendation: response[0].recommendation,
         });
       });
   }
@@ -51,14 +55,14 @@ export class orderPage extends Component {
 
     try {
       let result = await axios.post(
-        "https://prm6clmwohmnq3ouerds6uhzya0gppjj.lambda-url.us-east-1.on.aws/",
+        "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addorder",
 
         JSON.stringify(body),
         { headers: { "Content-Type": "application/json" } }
       );
       console.log("op", result);
       alert("Ordered " + row["foodName"] + " Successfully");
-      this.props.history.push("/giveratings");
+      this.props.history.push("/giveratings", { foodId: body.foodId });
     } catch (error) {
       console.error(error.response.data); // NOTE - use "error.response.data` (not "error")
     }
