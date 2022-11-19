@@ -8,6 +8,7 @@ import giveRating from "./components/giveRating";
 import RecipeUpload from "./components/RecipeUpload";
 // import UserPool from './UserPool'
 
+
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import "../src/main.css";
 import Question from "./components/Question";
@@ -23,7 +24,6 @@ function App() {
           
         </Routes>
       </Router> */}
-
 
       {!JSON.parse(localStorage.getItem("IsQuestion")) ? (
         <Router>
@@ -45,6 +45,7 @@ function App() {
           </Switch>
         </Router>
       )}
+      
     {/* </div> */}
     </>
   );

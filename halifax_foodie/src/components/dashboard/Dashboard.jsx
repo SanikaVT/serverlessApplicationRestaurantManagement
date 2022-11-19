@@ -3,7 +3,8 @@ import { useHistory } from "react-router-dom";
 import { Col, Row, Button } from "react-bootstrap";
 import LexChat from "react-lex";
 import { useState } from "react";
-import {Auth} from 'aws-amplify'
+import {Auth} from 'aws-amplify';
+import Image from 'react-bootstrap/Image';
 
 export default function Dashboard() {
   // const [Data, setData] = useState()
@@ -27,48 +28,8 @@ export default function Dashboard() {
           history.push('/')
       }
   }
-
-  //   var role;
-  //   var isCustomer;
-  //   useEffect(() => {
-  //     setRole(localStorage.getItem("Role"));
-  //     if (role.toLowerCase() == "customer") {
-  //       isCustomer = true;
-  //     } else {
-  //       isCustomer = false;
-  //     }
-  //   }, []);
-
-  // const getUseDetails = async () => {
-  //     await axios.get('https://tutorial4-api.herokuapp.com/api/users')
-  //         .then((response) => {
-  //             setData(response.data.data)
-  //             setAllData(response.data.data)
-  //         })
-  // }
-
-  // const viewProfile = async (id) => {
-
-  //     await history.push(`/profile/${id}`);
-  // }
-
-  // const onFilter = (e)=> {
-
-  //     let result =[];
-  //     result = AllData.filter((filter) =>
-  //         filter.firstName.toLowerCase().includes(e.target.value.toLowerCase()) ||
-  //         filter.lastName.toLowerCase().includes(e.target.value.toLowerCase()) )
-
-  //     setData(result);
-  // }
-  const chatbot = () => {
-    history.push("/chatbot");
-  };
   const orderitem = () => {
     history.push("/order");
-  };
-  const wordcloud = () => {
-    history.push("/wordcloud");
   };
   const recipeUpload = () => {
     history.push("/recipeupload");
@@ -76,9 +37,6 @@ export default function Dashboard() {
   const visual = () => {
     history.push("/visualization");
   };
-  // const pubsub = () => {
-  //   history.push("/pubsub");
-  // };
   const logout = () => {
     localStorage.clear();
     window.location.reload();
@@ -88,64 +46,55 @@ export default function Dashboard() {
     history.push("/chat");
   };
   return (
-    <div>
-      <Row>
-        <Col>
-          <Button className="add-button" onClick={() => chatbot()}>
-            Chatbot
-          </Button>
-        </Col>
-        <Col>
+    <div className="p-5">
+      <Col className="card-item-content"> 
+        <Row className="card-item">
           {role.toLowerCase() == "customer" ? (
             <Button className="add-button" onClick={() => orderitem()}>
-              Order Page
+              Order Food
             </Button>
-          ) : (
-            <Button
-              className="add-button"
-              onClick={() => orderitem()}
-              disabled={true}
-            >
-              Order Page
-            </Button>
+          ) : (<div></div>
+            // <Button
+            //   className="add-button"
+            //   onClick={() => orderitem()}
+            //   disabled={true}
+            // >
+            //   Order Food
+            // </Button>
           )}
-        </Col>
-        <Col>
-          <Button className="add-button" onClick={() => wordcloud()}>
-            Word Cloud
-          </Button>
-        </Col>
-        <Col>
+        </Row>
+        
+        <Row className="card-item">
           <Button className="add-button" onClick={() => visual()}>
             Visualization
           </Button>
-        </Col>
-        <Col>
-          {role.toLowerCase() == "customer" ? (
-            <Button
-              className="add-button"
-              onClick={() => recipeUpload()}
-              disabled={true}
-            >
-              Recipe Upload
-            </Button>
+        </Row>
+        <Row className="card-item">
+          {role.toLowerCase() == "customer" ? (<div></div>
+            // <Button
+            //   className="add-button"
+            //   onClick={() => recipeUpload()}
+            //   disabled={true}
+            // >
+            //   Recipe Upload
+            // </Button>
           ) : (
             <Button className="add-button" onClick={() => recipeUpload()}>
               Recipe Upload
             </Button>
           )}
-        </Col>
-        <Col>
+        </Row>
+        <Row className="card-item">
           <Button className="add-button" onClick={() => logout()}>
             Logout
           </Button>
-        </Col>
-        <Col>
+        </Row>
+        <Row className="card-item">
           <Button className="add-button" onClick={() => chat()}>
             Chat
           </Button>
-        </Col>
-      </Row>
+        </Row>
+      </Col>
       <LexChat
         botName="HalifaxFoodie"
         IdentityPoolId="us-east-1:1c14fb01-663e-45b0-a5fd-26ad6e14b8cc"
@@ -153,12 +102,17 @@ export default function Dashboard() {
         backgroundColor="#FFFFFF"
         height="430px"
         region="us-east-1"
-        headerText="Chat with our awesome bot"
+        headerText="Chat with me"
         headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
         greeting={
           "Hello, how can I help? You can say things like 'help' to get more info"
         }
       />
+       {/* <div><img
+    src='https://as2.ftcdn.net/v2/jpg/03/78/97/59/1000_F_378975954_G39M4ptXAjxKy80gbBIEo0wqBkk89gBF.jpg'
+    alt='example'
+  /></div> */}
     </div>
+   
   );
 }
