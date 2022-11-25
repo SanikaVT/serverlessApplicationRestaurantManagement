@@ -1,19 +1,18 @@
 import { Auth } from "aws-amplify";
 import React, { useEffect, useState } from "react";
-import db from "../firebase";
+import db from "../../firebase";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
-export default function Question() {
+export default function MultiFactor() {
   const history = useHistory();
 
   const [answer, setanswer] = useState("");
   const [key, setKey] = useState("");
   const [value, setValue] = useState("");
   const question = "What is Your favorite color?";
-  const [role, setRole] = useState("Customer");
+  const [role, setRole] = useState("customer");
   const [setQuestion, setsetQuestion] = useState();
-  // const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   var dbUser;
   useEffect(async () => {
     let dbUser;
@@ -46,8 +45,7 @@ export default function Question() {
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
-    // localStorage.setItem("IsQuestion", true)
-    // window.location.reload()
+
     console.log(setQuestion);
     if (setQuestion) {
       const user = JSON.parse(localStorage.getItem("user"));
@@ -64,8 +62,8 @@ export default function Question() {
         if (answer === dbUser?.answer) {
           localStorage.setItem("IsQuestion", true);
           localStorage.setItem("Role", dbUser.role);
-          history.push("/");
-          window.location.reload();
+          // history.push("/");
+          // window.location.reload();
         } else {
           alert("invalid answer");
         }
@@ -77,21 +75,6 @@ export default function Question() {
         username: user.username,
       };
       console.log(body);
-
-      // try {
-      //   let result = await axios.post(
-      //     "https://r4yqs2ksmymexq65kgw2todzbe0nkhll.lambda-url.us-east-1.on.aws/",
-
-      //     JSON.stringify(body),
-      //     { headers: { "Content-Type": "application/json" } }
-      //   );
-      //   console.log("success");
-      //   // localStorage.setItem("IsQuestion", true);
-      //   // history.push("/");
-      //   // window.location.reload();
-      // } catch (error) {
-      //   console.error("error", error.response.data); // NOTE - use "error.response.data` (not "error")
-      // }
 
       await axios
         .post(
@@ -117,27 +100,34 @@ export default function Question() {
           console.log("error", err);
         });
     } else {
-      await Auth.currentAuthenticatedUser().then((obj) => {
-        const user = {
-          username: obj.username,
-          email: obj.attributes.email,
-          question: question,
-          answer: answer,
-          role: role,
-        };
-        db.collection("users")
-          .add(user)
-          .then((doc) => {
-            localStorage.setItem("IsQuestion", true);
-            localStorage.setItem("Role", role);
-          })
-          .catch((err) => {
-            console.error("error:", err);
-          });
-      });
-      //sign-up third factor
       var u = JSON.parse(localStorage.getItem("user"));
-      console.log(u);
+
+      // 2nd factor
+      const firebase_body = {
+        username: u.username,
+        securityQuestion: question,
+        securityAnswer: answer,
+        role: role,
+      };
+      console.log(firebase_body);
+      await axios
+        .post(
+          "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addtofirebase",
+
+          JSON.stringify(firebase_body),
+          { headers: { "Content-Type": "application/json" } }
+        )
+        .then((response) => {
+          console.log(response);
+          localStorage.setItem("IsQuestion", true);
+          localStorage.setItem("Role", role);
+          // history.push("/");
+          // window.location.reload();
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+      //sign-up third factor
       var body = {
         email: u.email,
         userName: u.username,
@@ -158,7 +148,7 @@ export default function Question() {
         history.push("/");
         window.location.reload();
       } catch (error) {
-        console.error(error.response.data); // NOTE - use "error.response.data` (not "error")
+        console.error(error);
       }
     }
   };

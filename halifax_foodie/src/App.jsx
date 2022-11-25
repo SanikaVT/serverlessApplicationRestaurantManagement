@@ -3,15 +3,15 @@ import React from "react";
 import RealTimeChat from './components/real-time-chat/RealTimeChat'
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Dashboard from "./components/dashboard/Dashboard";
-import Order from "./components/orderPage";
-import giveRating from "./components/giveRating";
-import RecipeUpload from "./components/RecipeUpload";
+import Order from "./components/order/orderPage";
+import giveRating from "./components/review/giveRating";
+import RecipeUpload from "./components/recipeUpload/RecipeUpload";
 // import UserPool from './UserPool'
 
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import "../src/main.css";
-import Question from "./components/Question";
+import MultiFactor from "./components/mfa/Mfa";
 import './App.css'
 
 
@@ -28,15 +28,14 @@ function App() {
       {!JSON.parse(localStorage.getItem("IsQuestion")) ? (
         <Router>
           <Switch>
-            <Route exact path="/" component={Question} />
-            {/* <Route exact path="/dashboard" component={Dashboard} /> */}
+            <Route exact path="/" component={MultiFactor} />
           </Switch>
         </Router>
       ) : (
         <Router>
           <Switch>       
             <Route exact path="/" component={Dashboard} />
-            <Route exact path="/question" component={Question} />
+            <Route exact path="/question" component={MultiFactor} />
             <Route exact path="/giveratings" component={giveRating} />
             <Route exact path="/chat" component={RealTimeChat} />
             <Route exact path="/order" component={Order} />

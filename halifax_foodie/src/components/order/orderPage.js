@@ -51,7 +51,7 @@ export class orderPage extends Component {
       foodId: row["foodId"],
       price: row["price"],
       ingredient: row["ingredient"],
-      userName: this.state.user.username,
+      userName: localStorage.getItem("user").email,
     };
 
     try {

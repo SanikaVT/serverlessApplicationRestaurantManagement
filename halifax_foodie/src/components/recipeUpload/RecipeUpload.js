@@ -32,7 +32,7 @@ function RecipeUpload() {
       );
       console.log(result);
     } catch (error) {
-      console.error(error); // NOTE - use "error.response.data` (not "error")
+      console.error(error); 
     }
   };
 

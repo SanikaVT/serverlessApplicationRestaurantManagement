@@ -7,9 +7,7 @@ import {Auth} from 'aws-amplify';
 import Image from 'react-bootstrap/Image';
 
 export default function Dashboard() {
-  // const [Data, setData] = useState()
   const role = localStorage.getItem("Role");
-  // const role = localStorage.getItem("Role");
   const history = useHistory();
   const [currentUser,setCurrentUser] = useState(null)
 
@@ -54,13 +52,6 @@ export default function Dashboard() {
               Order Food
             </Button>
           ) : (<div></div>
-            // <Button
-            //   className="add-button"
-            //   onClick={() => orderitem()}
-            //   disabled={true}
-            // >
-            //   Order Food
-            // </Button>
           )}
         </Row>
         
@@ -71,13 +62,6 @@ export default function Dashboard() {
         </Row>
         <Row className="card-item">
           {role.toLowerCase() == "customer" ? (<div></div>
-            // <Button
-            //   className="add-button"
-            //   onClick={() => recipeUpload()}
-            //   disabled={true}
-            // >
-            //   Recipe Upload
-            // </Button>
           ) : (
             <Button className="add-button" onClick={() => recipeUpload()}>
               Recipe Upload
@@ -95,23 +79,6 @@ export default function Dashboard() {
           </Button>
         </Row>
       </Col>
-      <LexChat
-        botName="HalifaxFoodie"
-        IdentityPoolId="us-east-1:1c14fb01-663e-45b0-a5fd-26ad6e14b8cc"
-        placeholder="Placeholder text"
-        backgroundColor="#FFFFFF"
-        height="430px"
-        region="us-east-1"
-        headerText="Chat with me"
-        headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
-        greeting={
-          "Hello, how can I help? You can say things like 'help' to get more info"
-        }
-      />
-       {/* <div><img
-    src='https://as2.ftcdn.net/v2/jpg/03/78/97/59/1000_F_378975954_G39M4ptXAjxKy80gbBIEo0wqBkk89gBF.jpg'
-    alt='example'
-  /></div> */}
     </div>
    
   );

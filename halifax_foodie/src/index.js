@@ -22,8 +22,8 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
     <LexChat
-      botName="HalifaxFoodie"
-      IdentityPoolId="us-east-1:1c14fb01-663e-45b0-a5fd-26ad6e14b8cc"
+      botName="myBot"
+      IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
       placeholder="Placeholder text"
       backgroundColor="#FFFFFF"
       height="430px"
