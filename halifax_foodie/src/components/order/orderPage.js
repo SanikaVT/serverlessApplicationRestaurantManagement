@@ -1,9 +1,7 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router";
-import { Container, Col, Row, Button } from "react-bootstrap";
-import { Card } from "react-bootstrap";
-import { useState } from "react";
 import axios from "axios";
+import React, { Component } from "react";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { withRouter } from "react-router";
 import "./order.css";
 
 export class orderPage extends Component {

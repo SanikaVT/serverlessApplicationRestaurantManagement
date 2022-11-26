@@ -1,8 +1,8 @@
 import { Auth } from "aws-amplify";
-import React, { useEffect, useState } from "react";
-import db from "../../firebase";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import db from "../../firebase";
 
 export default function MultiFactor() {
   const history = useHistory();
