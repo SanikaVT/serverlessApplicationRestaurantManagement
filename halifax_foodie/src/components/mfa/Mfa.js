@@ -13,6 +13,7 @@ export default function MultiFactor() {
   const question = "What is Your favorite color?";
   const [role, setRole] = useState("customer");
   const [setQuestion, setsetQuestion] = useState();
+  const [cipher, setCipher] = useState("");
   var dbUser;
   useEffect(async () => {
     let dbUser;
@@ -34,7 +35,7 @@ export default function MultiFactor() {
     userData.forEach((doc) => {
       dbUser = doc.data();
     });
-    console.log(dbUser);
+    // console.log(dbUser);
 
     if (dbUser) {
       setsetQuestion(true);
@@ -57,11 +58,13 @@ export default function MultiFactor() {
       userData.forEach((doc) => {
         dbUser = doc.data();
       });
+      console.log(dbUser);
 
-      if (dbUser.answer) {
-        if (answer === dbUser?.answer) {
+      if (dbUser.securityAnswer) {
+        if (answer === dbUser?.securityAnswer) {
           localStorage.setItem("IsQuestion", true);
           localStorage.setItem("Role", dbUser.role);
+          console.log(dbUser.role);
           // history.push("/");
           // window.location.reload();
         } else {
@@ -71,7 +74,7 @@ export default function MultiFactor() {
 
       //login 3rd factor
       var body = {
-        cipher: value,
+        cipher: cipher,
         username: user.username,
       };
       console.log(body);
@@ -104,10 +107,11 @@ export default function MultiFactor() {
 
       // 2nd factor
       const firebase_body = {
-        username: u.username,
+        email: u.email,
         securityQuestion: question,
         securityAnswer: answer,
         role: role,
+        username: u.username,
       };
       console.log(firebase_body);
       await axios
@@ -206,32 +210,45 @@ export default function MultiFactor() {
 
                 <div className="mb-5">
                   {setQuestion ? (
-                    <h4>3rd Factor Authentication</h4>
+                    <div>
+                      <h4>3rd Factor Authentication</h4>
+                      <div className="cus-form form-top-space">
+                        <span>Enter a cipher</span>
+                        <input
+                          className="input-design top-space"
+                          type="text"
+                          value={cipher}
+                          onChange={(e) => setCipher(e.target.value)}
+                          placeholder="Enter cipher value"
+                        />
+                      </div>
+                    </div>
                   ) : (
-                    <h4>Set Up 3rd Factor Authentication</h4>
+                    <div>
+                      <h4>Set Up 3rd Factor Authentication</h4>
+                      <div className="cus-form form-top-space">
+                        <span>Enter a key</span>
+                        <input
+                          className="input-design top-space"
+                          type="text"
+                          value={key}
+                          onChange={(e) => setKey(e.target.value)}
+                          placeholder="Enter key"
+                        />
+                      </div>
+
+                      <div className="cus-form form-top-space">
+                        <span>Enter a value</span>
+                        <input
+                          className="input-design top-space"
+                          type="text"
+                          value={value}
+                          onChange={(e) => setValue(e.target.value)}
+                          placeholder="Enter Value"
+                        />
+                      </div>
+                    </div>
                   )}
-
-                  <div className="cus-form form-top-space">
-                    <span>Enter a key</span>
-                    <input
-                      className="input-design top-space"
-                      type="text"
-                      value={key}
-                      onChange={(e) => setKey(e.target.value)}
-                      placeholder="Enter key"
-                    />
-                  </div>
-
-                  <div className="cus-form form-top-space">
-                    <span>Enter a value</span>
-                    <input
-                      className="input-design top-space"
-                      type="text"
-                      value={value}
-                      onChange={(e) => setValue(e.target.value)}
-                      placeholder="Enter Value"
-                    />
-                  </div>
                 </div>
 
                 <div className="cus-form form-top-space">

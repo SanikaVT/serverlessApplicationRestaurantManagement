@@ -8,7 +8,7 @@ import { Button, OutlinedInput } from '@mui/material';
 export default function ChatRoom({currentUser, chatWith}) {
 
     const [formValue, setFormValue] = useState("");
-    const sentBy = currentUser.role === 'Customer' ? currentUser.email : 'restaurant'
+    const sentBy = currentUser.role.toLowerCase() === 'Customer' ? currentUser.email : 'restaurant'
     const sentTo = chatWith ? chatWith.email : 'restaurant'
 
     const messagesRef = db.collection("messages");

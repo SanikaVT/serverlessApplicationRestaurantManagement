@@ -6,6 +6,8 @@ function RecipeUpload() {
   const [fileContent, setFileContent] = useState("");
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
+  const [similarRecipe, setSimilarRecipe] = useState("");
+  const [displaySimilarRecipe, setDisplaySimilarRecipe] = useState("");
 
   const inputRef = useRef();
 
@@ -32,10 +34,12 @@ function RecipeUpload() {
       );
       console.log(result);
     } catch (error) {
-      console.error(error); 
+      console.error(error);
     }
   };
-
+  const getSimilarRecipe = () => {
+    setDisplaySimilarRecipe(similarRecipe);
+  };
   const exportRecipe = async () => {
     const body = {
       filename: uploadedFileName,
@@ -59,6 +63,7 @@ function RecipeUpload() {
       console.log(result);
       setTitle("Title: " + result[0].title);
       setIngredients("Ingredients: " + result[0].ingredients);
+      setSimilarRecipe("Similar Recipe: " + result[0].similarRecipies);
     } catch (error) {
       console.error(error); // NOTE - use "error.response.data` (not "error")
     }
@@ -109,6 +114,10 @@ function RecipeUpload() {
         Extract Title and Ingredients
       </button>
 
+      <button className="m-3" onClick={getSimilarRecipe}>
+        Get Similar recipes
+      </button>
+
       <div className="m-3">
         <span>
           <b>{title}</b>
@@ -118,6 +127,12 @@ function RecipeUpload() {
       <div className="m-3">
         <span>
           <b>{ingredients} </b>
+        </span>
+      </div>
+
+      <div className="m-3">
+        <span>
+          <b>{displaySimilarRecipe} </b>
         </span>
       </div>
     </div>

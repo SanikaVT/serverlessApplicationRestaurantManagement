@@ -5,13 +5,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
-
+import { Button } from "react-bootstrap";
 import { Amplify } from "aws-amplify";
 import config from "./aws-exports";
 import LexChat from "react-lex";
 
 Amplify.configure(config);
 
+const gotoHome = () => {
+  window.location.reload();
+};
 // const root = ReactDOM.createRoot(document.getElementById("root"));
 // root.render(
 //   <React.StrictMode>
@@ -20,6 +23,7 @@ Amplify.configure(config);
 // );
 ReactDOM.render(
   <React.StrictMode>
+   
     <App />
     <LexChat
       botName="myBot"

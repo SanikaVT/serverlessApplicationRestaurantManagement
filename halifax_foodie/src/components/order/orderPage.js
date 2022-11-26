@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Container, Col, Row, Button } from "react-bootstrap";
 import { Card } from "react-bootstrap";
-import { useLocation } from "react-router";
 import { useState } from "react";
 import axios from "axios";
 import "./order.css";
@@ -20,10 +19,6 @@ export class orderPage extends Component {
   }
 
   async componentDidMount() {
-    var body = {
-      body: this.state.user.username,
-    };
-
     await axios
       .post(
         "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/fetchfood",
@@ -34,8 +29,6 @@ export class orderPage extends Component {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": "true",
           },
-
-          body: JSON.stringify(body),
         }
       )
       .then((response) => {
@@ -77,9 +70,17 @@ export class orderPage extends Component {
     });
   }
 
+  //  const  goToHome() {
+  //     this.props.history.push("/");
+  //     window.location.reload();
+  //   }
+
   render() {
     return (
       <Container>
+        {/* <Button onClick={} variant="primary">
+          Home
+        </Button> */}
         <Row className="to-do-list-items">
           <Col md={12} lg={6}>
             <div>
