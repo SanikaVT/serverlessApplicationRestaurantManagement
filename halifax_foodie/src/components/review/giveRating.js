@@ -1,8 +1,7 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router";
-import { Row, Button } from "react-bootstrap";
 import axios from "axios";
-import { useLocation } from "react-router";
+import React, { Component } from "react";
+import { Button, Row } from "react-bootstrap";
+import { withRouter } from "react-router";
 export class giveRating extends Component {
   constructor(props) {
     super(props);

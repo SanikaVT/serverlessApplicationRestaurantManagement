@@ -1,29 +1,52 @@
 import React from "react";
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import RealTimeChat from './components/real-time-chat/RealTimeChat'
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Dashboard from "./components/dashboard/Dashboard";
 import Order from "./components/order/orderPage";
-import giveRating from "./components/review/giveRating";
+import RealTimeChat from './components/real-time-chat/RealTimeChat';
 import RecipeUpload from "./components/recipeUpload/RecipeUpload";
-// import UserPool from './UserPool'
+import giveRating from "./components/review/giveRating";
 
+import { useHistory } from 'react-router-dom';
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
-import "../src/main.css";
-import MultiFactor from "./components/mfa/Mfa";
-import './App.css'
+import '@aws-amplify/ui-react/styles.css';
 
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import "../src/main.css";
+import './App.css';
+import MultiFactor from "./components/mfa/Mfa";
 
 function App() {
+  const history = useHistory();
+  const logout = () => {
+    localStorage.clear();
+    window.location.reload();
+    history.push("/");
+  };
+
   return (
-    // <div className="App">
-    <>
-      {/* <Router>
-        <Routes>
-          
-        </Routes>
-      </Router> */}
+    <Box sx={{ flexGrow: 1 }} className="app">
+
+      {/* {//references: */}
+      {/* //https://mui.com/material-ui/react-app-bar/} */}
+
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Halifax Foodie
+          </Typography>
+          <Button color="inherit" onClick={() => logout()}>Logout</Button>
+        </Toolbar>
+      </AppBar>
 
       {!JSON.parse(localStorage.getItem("IsQuestion")) ? (
         <Router>
@@ -33,7 +56,7 @@ function App() {
         </Router>
       ) : (
         <Router>
-          <Switch>       
+          <Switch>
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/question" component={MultiFactor} />
             <Route exact path="/giveratings" component={giveRating} />
@@ -44,9 +67,8 @@ function App() {
           </Switch>
         </Router>
       )}
-      
-    {/* </div> */}
-    </>
+    </Box>
+
   );
 }
 // export default App;

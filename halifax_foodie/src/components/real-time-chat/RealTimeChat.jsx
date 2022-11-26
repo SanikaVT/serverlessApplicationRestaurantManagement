@@ -3,13 +3,12 @@
 
 import React, { useEffect, useState } from "react";
 
-import { Auth } from "aws-amplify";
+import { useHistory } from 'react-router-dom';
+import db from '../../firebase';
 import ChatRoom from "./ChatRoom";
-import './RealTimeChat.scss'
-import db from '../../firebase'
-import {useHistory} from 'react-router-dom'
+import './RealTimeChat.scss';
 
-import { CardContent, Card, Typography, Grid, CardHeader } from "@mui/material";
+import { Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 
 export default function RealTimeChat({sentBy}) {
     const [currentUser, setCurrentUser] = useState(null)
