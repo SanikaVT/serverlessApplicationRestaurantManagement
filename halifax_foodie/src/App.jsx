@@ -8,6 +8,7 @@ import RecipeUpload from "./components/recipeUpload/RecipeUpload";
 import giveRating from "./components/review/giveRating";
 
 import { useHistory } from 'react-router-dom';
+import LexChat from "react-lex";
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
@@ -24,6 +25,8 @@ function App() {
     window.location.reload();
     history.push("/");
   };
+
+  let isQuestion = JSON.parse(localStorage.getItem("IsQuestion")) == 'true'
 
   return (
     <Box sx={{ flexGrow: 1 }} className="app">
@@ -48,7 +51,7 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      {!JSON.parse(localStorage.getItem("IsQuestion")) ? (
+      {!isQuestion ? (
         <Router>
           <Switch>
             <Route exact path="/" component={MultiFactor} />
@@ -67,6 +70,22 @@ function App() {
           </Switch>
         </Router>
       )}
+  {
+    isQuestion &&
+    <LexChat
+      botName="myBot"
+      IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
+      placeholder="Placeholder text"
+      backgroundColor="#FFFFFF"
+      height="430px"
+      region="us-east-1"
+      headerText="Chat with me"
+      headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
+      greeting={
+        "Hello, how can I help? You can say things like 'help' to get more info"
+      }
+    />
+  }
     </Box>
 
   );

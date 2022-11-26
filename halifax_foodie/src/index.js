@@ -5,10 +5,8 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
-import { Button } from "react-bootstrap";
 import { Amplify } from "aws-amplify";
 import config from "./aws-exports";
-import LexChat from "react-lex";
 
 Amplify.configure(config);
 
@@ -23,21 +21,7 @@ const gotoHome = () => {
 // );
 ReactDOM.render(
   <React.StrictMode>
-   
     <App />
-    <LexChat
-      botName="myBot"
-      IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
-      placeholder="Placeholder text"
-      backgroundColor="#FFFFFF"
-      height="430px"
-      region="us-east-1"
-      headerText="Chat with me"
-      headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
-      greeting={
-        "Hello, how can I help? You can say things like 'help' to get more info"
-      }
-    />
   </React.StrictMode>,
   document.getElementById("root")
 );
