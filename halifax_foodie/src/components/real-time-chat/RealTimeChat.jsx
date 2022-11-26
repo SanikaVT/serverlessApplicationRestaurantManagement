@@ -29,7 +29,7 @@ export default function RealTimeChat({sentBy}) {
         }
         setCurrentUser(JSON.parse(localStorageCurrentUser));
 
-        if(currentUser?.role.toLowerCase() !== 'customer') {
+        if(currentUser?.role?.toLowerCase() !== 'customer') {
             const users = await db.collection("users");
             const userData = await users.where("role", "==", 'Customer').get();
 
@@ -93,15 +93,15 @@ export default function RealTimeChat({sentBy}) {
                     <CardHeader style={{borderBottom: '1px solid lightgray'}} title={getCardHeading()}/>
                     <CardContent>
                         {
-                            currentUser && currentUser.role.toLowerCase() === 'customer' && <ChatRoom currentUser={currentUser}/>
+                            currentUser && currentUser?.role?.toLowerCase() === 'customer' && <ChatRoom currentUser={currentUser}/>
                         }
 
                         {
-                            currentUser && currentUser.role.toLowerCase() !== 'customer' && selectedCustomer && <ChatRoom currentUser={currentUser} chatWith={selectedCustomer} />
+                            currentUser && currentUser?.role?.toLowerCase() !== 'customer' && selectedCustomer && <ChatRoom currentUser={currentUser} chatWith={selectedCustomer} />
                         }
 
                         {
-                            currentUser && currentUser.role.toLowerCase() !== 'customer' && !selectedCustomer && <CustomersList customerList={customerList}/>
+                            currentUser && currentUser?.role?.toLowerCase() !== 'customer' && !selectedCustomer && <CustomersList customerList={customerList}/>
                         }
 
                         {

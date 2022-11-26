@@ -56,7 +56,7 @@ export default function Dashboard() {
       columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       marginTop={"50px"}
     >
-      {role.toLowerCase() === "customer" && (
+      {role?.toLowerCase() === "customer" && (
         <Grid item xs={6} className="grid-item">
           <div className="card-item" onClick={() => orderitem()}>
             <Card className="card" variant="outlined">
@@ -74,7 +74,7 @@ export default function Dashboard() {
         </div>
       </Grid>
 
-      {role.toLowerCase() !== "customer" && (
+      {role?.toLowerCase() !== "customer" && (
         <Grid item xs={6} className="grid-item">
           <div className="card-item" onClick={() => recipeUpload()}>
             <Card className="card" variant="outlined">

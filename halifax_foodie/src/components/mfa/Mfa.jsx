@@ -174,107 +174,105 @@ export default function MultiFactor() {
   };
 
   return (
-    <>
-      <div className="all-content-center">
-        <div className="container">
-          <div className="center-box">
-            <div className="main-box">
-              <form onSubmit={(e) => onSubmitForm(e)}>
-                <div className="mb-5">
-                  {setQuestion ? (
-                    <div></div>
-                  ) : (
+    <div className="row justify-content-center align-items-center mt-4">
+      <div className="col-md-6">
+        <div className="card">
+          <div className="card-body">
+            <form onSubmit={(e) => onSubmitForm(e)}>
+              <div className="mb-5">
+                {setQuestion ? (
+                  <div></div>
+                ) : (
+                  <div>
                     <div>
-                      <div>
-                        <h4> Enter Role</h4>
-                      </div>
-                      <div>
-                        <span>Please enter your role here</span>
-                        <input
-                          className="input-design top-space"
-                          type="text"
-                          value={role}
-                          onChange={(e) => setRole(e.target.value)}
-                          placeholder="Customer"
-                        />
-                      </div>
+                      <h4> Enter Role</h4>
                     </div>
-                  )}
-                </div>
-
-                <div></div>
-                <div className="mb-5">
-                  {setQuestion ? (
-                    <h4>2nd Factor Authentication</h4>
-                  ) : (
-                    <h4>Set up 2nd Factor Authentication</h4>
-                  )}
-
-                  <div className="cus-form form-top-space">
-                    <span>What is Your favorite color?</span>
-                    <input
-                      className="input-design top-space"
-                      type="text"
-                      value={answer}
-                      onChange={(e) => setanswer(e.target.value)}
-                      placeholder="Your Answer"
-                    />
+                    <div>
+                      <span>Please enter your role here</span>
+                      <input
+                        className="input-design top-space form-control"
+                        type="text"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        placeholder="Customer"
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
+              </div>
 
-                <div></div>
-
-                <div className="mb-5">
-                  {setQuestion ? (
-                    <div>
-                      <h4>3rd Factor Authentication</h4>
-                      <div className="cus-form form-top-space">
-                        <span>Enter a cipher</span>
-                        <input
-                          className="input-design top-space"
-                          type="text"
-                          value={cipher}
-                          onChange={(e) => setCipher(e.target.value)}
-                          placeholder="Enter cipher value"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <h4>Set Up 3rd Factor Authentication</h4>
-                      <div className="cus-form form-top-space">
-                        <span>Enter a key</span>
-                        <input
-                          className="input-design top-space"
-                          type="text"
-                          value={key}
-                          onChange={(e) => setKey(e.target.value)}
-                          placeholder="Enter key"
-                        />
-                      </div>
-
-                      <div className="cus-form form-top-space">
-                        <span>Enter a value</span>
-                        <input
-                          className="input-design top-space"
-                          type="text"
-                          value={value}
-                          onChange={(e) => setValue(e.target.value)}
-                          placeholder="Enter Value"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
+              <div></div>
+              <div className="mb-5">
+                {setQuestion ? (
+                  <h4>2nd Factor Authentication</h4>
+                ) : (
+                  <h4>Set up 2nd Factor Authentication</h4>
+                )}
 
                 <div className="cus-form form-top-space">
-                  <button type="submit">Submit</button>
+                  <span>What is Your favorite color?</span>
+                  <input
+                    className="input-design top-space form-control"
+                    type="text"
+                    value={answer}
+                    onChange={(e) => setanswer(e.target.value)}
+                    placeholder="Your Answer"
+                  />
                 </div>
-              </form>
-            </div>
+              </div>
+
+              <div></div>
+
+              <div className="mb-5">
+                {setQuestion ? (
+                  <div>
+                    <h4>3rd Factor Authentication</h4>
+                    <div className="cus-form form-top-space">
+                      <span>Enter a cipher</span>
+                      <input
+                        className="input-design top-space form-control"
+                        type="text"
+                        value={cipher}
+                        onChange={(e) => setCipher(e.target.value)}
+                        placeholder="Enter cipher value"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <h4>Set Up 3rd Factor Authentication</h4>
+                    <div className="cus-form form-top-space">
+                      <span>Enter a key</span>
+                      <input
+                        className="input-design top-space form-control"
+                        type="text"
+                        value={key}
+                        onChange={(e) => setKey(e.target.value)}
+                        placeholder="Enter key"
+                      />
+                    </div>
+
+                    <div className="cus-form form-top-space">
+                      <span>Enter a value</span>
+                      <input
+                        className="input-design top-space form-control"
+                        type="text"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        placeholder="Enter Value"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="cus-form form-top-space">
+                <button className="btn btn-primary" type="submit">Submit</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
