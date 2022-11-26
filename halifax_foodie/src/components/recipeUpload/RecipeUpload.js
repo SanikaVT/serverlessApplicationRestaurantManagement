@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
+import db from "../../firebase";
 
 function RecipeUpload() {
   const [uploadedFileName, setUploadedFileName] = useState();
@@ -43,6 +44,7 @@ function RecipeUpload() {
   const exportRecipe = async () => {
     const body = {
       filename: uploadedFileName,
+      createdTime: new Date().getTime(),
     };
 
     try {
@@ -61,12 +63,27 @@ function RecipeUpload() {
 
       result = JSON.parse(result.data.body);
       console.log(result);
-      setTitle("Title: " + result[0].title);
-      setIngredients("Ingredients: " + result[0].ingredients);
-      setSimilarRecipe("Similar Recipe: " + result[0].similarRecipies);
+      setTitle(result[0].title);
+      setIngredients(result[0].ingredients);
+      setSimilarRecipe(result[0].similarRecipies);
     } catch (error) {
       console.error(error); // NOTE - use "error.response.data` (not "error")
     }
+
+    const recipe = {
+      title: title,
+      ingredients: ingredients,
+      createdTime: new Date().getTime(),
+    };
+
+    db.collection("recipes")
+      .add(recipe)
+      .then((doc) => {
+        console.log("data Submitted Successfully.");
+      })
+      .catch((err) => {
+        console.error("error:", err);
+      });
   };
 
   const handleDisplayFileDetails = () => {
@@ -120,19 +137,19 @@ function RecipeUpload() {
 
       <div className="m-3">
         <span>
-          <b>{title}</b>
+          <b>Title: {title}</b>
         </span>
       </div>
 
       <div className="m-3">
         <span>
-          <b>{ingredients} </b>
+          <b>Ingredients: {ingredients} </b>
         </span>
       </div>
 
       <div className="m-3">
         <span>
-          <b>{displaySimilarRecipe} </b>
+          <b>Similar Recipe: {displaySimilarRecipe} </b>
         </span>
       </div>
     </div>

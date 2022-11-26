@@ -27,7 +27,6 @@ export default function MultiFactor() {
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("IsQuestion", false);
       }));
-
     const user = JSON.parse(localStorage.getItem("user"));
     const users = await db.collection("users");
     const userData = await users.where("username", "==", user.username).get();
@@ -35,7 +34,7 @@ export default function MultiFactor() {
     userData.forEach((doc) => {
       dbUser = doc.data();
     });
-    // console.log(dbUser);
+    console.log(dbUser);
 
     if (dbUser) {
       setsetQuestion(true);
@@ -58,8 +57,8 @@ export default function MultiFactor() {
       userData.forEach((doc) => {
         dbUser = doc.data();
       });
-      console.log(dbUser);
-
+      console.log(dbUser.securityAnswer);
+      var count;
       if (dbUser.securityAnswer) {
         if (answer === dbUser?.securityAnswer) {
           localStorage.setItem("IsQuestion", true);
@@ -67,6 +66,21 @@ export default function MultiFactor() {
           console.log(dbUser.role);
           // history.push("/");
           // window.location.reload();
+          console.log(dbUser.count);
+          db.collection("users")
+            .doc(dbUser.email)
+            .update({
+              count: dbUser.count + 1,
+              lastAuthTime: new Date().getTime(),
+            })
+            .then((doc) => {
+              console.log("data Submitted Successfully.");
+              // history.push("/");
+              // window.location.reload();
+            })
+            .catch((err) => {
+              console.error("error:", err);
+            });
         } else {
           alert("invalid answer");
         }
@@ -112,6 +126,8 @@ export default function MultiFactor() {
         securityAnswer: answer,
         role: role,
         username: u.username,
+        count: 0,
+        lastAuthTime: new Date().getTime(),
       };
       console.log(firebase_body);
       await axios
