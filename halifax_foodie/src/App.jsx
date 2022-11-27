@@ -17,6 +17,7 @@ import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/mater
 import "../src/main.css";
 import './App.css';
 import MultiFactor from "./components/mfa/Mfa";
+import Visualization from "./components/visualization/Visualization";
 
 function App() {
   const history = useHistory();
@@ -66,7 +67,7 @@ function App() {
             <Route exact path="/chat" component={RealTimeChat} />
             <Route exact path="/order" component={Order} />
             <Route exact path="/recipeupload" component={RecipeUpload} />
-
+            <Route exact path="/visualization" component={Visualization} />
           </Switch>
         </Router>
       )}
@@ -77,7 +78,7 @@ function App() {
       IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
       placeholder="Placeholder text"
       backgroundColor="#FFFFFF"
-      height="430px"
+      height={430}
       region="us-east-1"
       headerText="Chat with me"
       headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}

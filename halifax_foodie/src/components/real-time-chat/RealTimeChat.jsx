@@ -87,9 +87,9 @@ export default function RealTimeChat({sentBy}) {
     }
 
     return (
-        <Grid container spacing={2} justifyContent="center" alignItems="center" height={'100%'}>
+        <Grid container spacing={2} justifyContent="center" alignItems="center" height={'100%'} marginTop={2}>
             <Grid item={true} xs={2} sm={4} md={4}  className="chat-container">
-                <Card variant="outlined">
+                <Card variant="outlined" style={{marginBottom: '25px'}}>
                     <CardHeader style={{borderBottom: '1px solid lightgray'}} title={getCardHeading()}/>
                     <CardContent>
                         {
