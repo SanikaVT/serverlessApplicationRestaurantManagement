@@ -23,10 +23,14 @@ function App() {
   const history = useHistory();
   const logout = () => {
     localStorage.clear();
-    window.location.reload();
     history.push("/");
+    window.location.reload();
   };
+  const home= () => {
+    history.push("/");
+    window.location.reload();
 
+  };
   let isQuestion = !!JSON.parse(localStorage.getItem("IsQuestion"))
 
   return (
@@ -38,6 +42,7 @@ function App() {
       <AppBar position="static">
         <Toolbar>
           <IconButton
+          onClick={() => home()}
             size="large"
             edge="start"
             color="inherit"
@@ -72,7 +77,7 @@ function App() {
         </Router>
       )}
   {
-    isQuestion &&
+    
     <LexChat
       botName="myBot"
       IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
@@ -80,7 +85,7 @@ function App() {
       backgroundColor="#FFFFFF"
       height={430}
       region="us-east-1"
-      headerText="Chat with me"
+      headerText="HalifaxFoodie Bot"
       headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
       greeting={
         "Hello, how can I help? You can say things like 'help' to get more info"

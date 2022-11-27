@@ -1,6 +1,7 @@
 import { Auth } from "aws-amplify";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import db from "../../firebase";
 
@@ -42,6 +43,34 @@ export default function MultiFactor() {
       setsetQuestion(false);
     }
   }, []);
+
+  const generateCipherText = async () => {
+    var u = JSON.parse(localStorage.getItem("user"));
+
+//sign-up third factor
+var body = {
+  email: u.email,
+  userName: u.username,
+  role: role,
+  key: key,
+  plainText: value,
+};
+console.log(body);
+
+try {
+  let result = await axios.post(
+    "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addcipher",
+
+    JSON.stringify(body),
+    { headers: { "Content-Type": "application/json" } }
+  );
+  console.log("op", result);
+  setCipher(result.data.body)
+} catch (error) {
+  console.error(error);
+}
+  };
+
 
   const onSubmitForm = async (e) => {
     e.preventDefault();
@@ -141,35 +170,13 @@ export default function MultiFactor() {
           console.log(response);
           localStorage.setItem("IsQuestion", true);
           localStorage.setItem("Role", role);
-          // history.push("/");
-          // window.location.reload();
+          history.push("/");
+          window.location.reload();
         })
         .catch((err) => {
           console.log("error", err);
         });
-      //sign-up third factor
-      var body = {
-        email: u.email,
-        userName: u.username,
-        role: role,
-        key: key,
-        plainText: value,
-      };
-      console.log(body);
-
-      try {
-        let result = await axios.post(
-          "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addcipher",
-
-          JSON.stringify(body),
-          { headers: { "Content-Type": "application/json" } }
-        );
-        console.log("op", result);
-        history.push("/");
-        window.location.reload();
-      } catch (error) {
-        console.error(error);
-      }
+      
     }
   };
 
@@ -193,7 +200,7 @@ export default function MultiFactor() {
                         className="input-design top-space form-control"
                         type="text"
                         value={role}
-                        onChange={(e) => setRole(e.target.value)}
+                        onChange={(e) => setRole(e.target.value.toLowerCase())}
                         placeholder="Customer"
                       />
                     </div>
@@ -262,6 +269,10 @@ export default function MultiFactor() {
                         placeholder="Enter Value"
                       />
                     </div>
+                    <div className="mb-3"></div>
+                    <Button onClick={generateCipherText}>Generate Cipher</Button>
+                    <div className="mb-2"></div>
+                    <span>{cipher}</span>
                   </div>
                 )}
               </div>

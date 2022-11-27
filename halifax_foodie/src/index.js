@@ -7,12 +7,10 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
 import { Amplify } from "aws-amplify";
 import config from "./aws-exports";
+import LexChat from "react-lex";
 
 Amplify.configure(config);
 
-const gotoHome = () => {
-  window.location.reload();
-};
 // const root = ReactDOM.createRoot(document.getElementById("root"));
 // root.render(
 //   <React.StrictMode>

@@ -42,9 +42,9 @@ export class orderPage extends Component {
       foodId: row["foodId"],
       price: row["price"],
       ingredient: row["ingredient"],
-      userName: localStorage.getItem("user").email,
+      userName: this.state.user.email,
     };
-
+    console.log(body)
     try {
       let result = await axios.post(
         "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addorder",
