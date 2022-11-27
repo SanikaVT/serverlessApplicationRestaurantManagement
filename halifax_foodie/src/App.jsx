@@ -26,7 +26,7 @@ function App() {
     history.push("/");
   };
 
-  let isQuestion = JSON.parse(localStorage.getItem("IsQuestion")) == 'true'
+  let isQuestion = !!JSON.parse(localStorage.getItem("IsQuestion"))
 
   return (
     <Box sx={{ flexGrow: 1 }} className="app">
