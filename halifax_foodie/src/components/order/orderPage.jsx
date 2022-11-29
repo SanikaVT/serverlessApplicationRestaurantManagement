@@ -15,7 +15,7 @@ export class orderPage extends Component {
       ingredient: "",
     };
   }
-
+  //Fetches food from dynamodb
   async componentDidMount() {
     await axios
       .post(
@@ -36,6 +36,7 @@ export class orderPage extends Component {
         });
       });
   }
+  //Code to order an item from the given list
   async orderitem(row) {
     const body = {
       foodName: row["foodName"],
@@ -56,10 +57,11 @@ export class orderPage extends Component {
       alert("Ordered " + row["foodName"] + " Successfully");
       this.props.history.push("/giveratings", { foodId: body.foodId });
     } catch (error) {
-      console.error(error.response.data); // NOTE - use "error.response.data` (not "error")
+      console.error(error.response.data); 
     }
   }
 
+  //Exports recipe of the selected item
   async exportRecipe(row) {
     this.setState({
       heading: "Extracted Title and Key Ingredients",
@@ -68,10 +70,7 @@ export class orderPage extends Component {
     });
   }
 
-  //  const  goToHome() {
-  //     this.props.history.push("/");
-  //     window.location.reload();
-  //   }
+  
 
   render() {
     return (

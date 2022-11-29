@@ -18,7 +18,7 @@ export default function MultiFactor() {
   var dbUser;
   useEffect(async () => {
     let dbUser;
-
+    //Checking if the user is a registered user
     !JSON.parse(localStorage.getItem("IsQuestion")) &&
       (await Auth.currentUserPoolUser().then((obj) => {
         const user = {
@@ -71,7 +71,7 @@ try {
 }
   };
 
-
+  // On submit, perform 2nd and 3rd factor authentication, first check 2nd factor auth and if the answer is invalid, show invalid answer otherwise perform third factor auth
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
@@ -93,19 +93,15 @@ try {
           localStorage.setItem("IsQuestion", true);
           localStorage.setItem("Role", dbUser.role);
           console.log(dbUser.role);
-          // history.push("/");
-          // window.location.reload();
           console.log(dbUser.count);
           db.collection("users")
             .doc(dbUser.email)
             .update({
               count: dbUser.count + 1,
-              lastAuthTime: new Date().getTime(),
+              lastAuthTime: new Date().toLocaleString(),
             })
             .then((doc) => {
               console.log("data Submitted Successfully.");
-              // history.push("/");
-              // window.location.reload();
             })
             .catch((err) => {
               console.error("error:", err);
@@ -142,13 +138,12 @@ try {
           window.location.reload();
         })
         .catch((err) => {
-          // Handle error
           console.log("error", err);
         });
     } else {
       var u = JSON.parse(localStorage.getItem("user"));
 
-      // 2nd factor
+      //signup 2nd factor
       const firebase_body = {
         email: u.email,
         securityQuestion: question,
@@ -156,7 +151,7 @@ try {
         role: role,
         username: u.username,
         count: 0,
-        lastAuthTime: new Date().getTime(),
+        lastAuthTime: new Date().toLocaleString(),
       };
       console.log(firebase_body);
       await axios

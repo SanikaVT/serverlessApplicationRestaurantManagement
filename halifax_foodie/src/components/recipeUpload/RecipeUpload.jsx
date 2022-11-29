@@ -41,10 +41,12 @@ function RecipeUpload() {
   const getSimilarRecipe = () => {
     setDisplaySimilarRecipe(similarRecipe);
   };
+
+  //Export recipe function
   const exportRecipe = async () => {
     const body = {
       filename: uploadedFileName,
-      createdTime: new Date().getTime(),
+      createdTime: new Date().toLocaleString(),
     };
 
     try {
@@ -64,28 +66,29 @@ function RecipeUpload() {
       result = JSON.parse(result.data.body);
       console.log(result);
       setTitle(result[0].title);
-      setIngredients(result[0].ingredients);
+      setIngredients((result[0].ingredients).toString());
       setSimilarRecipe(result[0].similarRecipies);
+      const recipe = {
+        title: title,
+        ingredients: ingredients,
+        createdTime: new Date().toLocaleString(),
+      };
+  
+      db.collection("recipes")
+        .add(recipe)
+        .then((doc) => {
+          console.log("data Submitted Successfully.");
+        })
+        .catch((err) => {
+          console.error("error:", err);
+        });
+   
     } catch (error) {
       console.error(error); // NOTE - use "error.response.data` (not "error")
     }
-
-    const recipe = {
-      title: title,
-      ingredients: ingredients,
-      createdTime: new Date().getTime(),
-    };
-
-    db.collection("recipes")
-      .add(recipe)
-      .then((doc) => {
-        console.log("data Submitted Successfully.");
-      })
-      .catch((err) => {
-        console.error("error:", err);
-      });
   };
-
+    
+  //Code to uplaod recipe file from the system
   const handleDisplayFileDetails = () => {
     inputRef.current?.files &&
       setUploadedFileName(inputRef.current.files[0].name);

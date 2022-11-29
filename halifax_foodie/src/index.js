@@ -11,15 +11,22 @@ import LexChat from "react-lex";
 
 Amplify.configure(config);
 
-// const root = ReactDOM.createRoot(document.getElementById("root"));
-// root.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// );
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    <LexChat
+      botName="myBot"
+      IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
+      placeholder="Placeholder text"
+      backgroundColor="#FFFFFF"
+      height={430}
+      region="us-east-1"
+      headerText="HalifaxFoodie Bot"
+      headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
+      greeting={
+        "Hello, how can I help? You can say things like 'help' to get more info"
+      }
+    />
   </React.StrictMode>,
   document.getElementById("root")
 );

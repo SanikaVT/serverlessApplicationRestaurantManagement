@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import './Dashboard.scss';
-
+//Dashboard contains all the buttons visualization, Uplaod Recipe, Order Food etc
 export default function Dashboard() {
   const role = localStorage.getItem("Role");
   const history = useHistory();

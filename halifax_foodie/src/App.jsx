@@ -23,8 +23,9 @@ function App() {
   const history = useHistory();
   const logout = () => {
     localStorage.clear();
-    history.push("/");
     window.location.reload();
+    history.push("/");
+    
   };
   const home= () => {
     history.push("/");
