@@ -8,14 +8,12 @@ import RecipeUpload from "./components/recipeUpload/RecipeUpload";
 import giveRating from "./components/review/giveRating";
 
 import { useHistory } from 'react-router-dom';
-import LexChat from "react-lex";
-//Reference: https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
 
 import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import "../src/main.css";
-import './App.css';
+import './App.scss';
 import MultiFactor from "./components/mfa/Mfa";
 import Visualization from "./components/visualization/Visualization";
 
@@ -25,7 +23,6 @@ function App() {
     localStorage.clear();
     window.location.reload();
     history.push("/");
-    
   };
   const home= () => {
     history.push("/");
@@ -78,20 +75,6 @@ function App() {
         </Router>
       )}
   {
-    
-    <LexChat
-      botName="myBot"
-      IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
-      placeholder="Placeholder text"
-      backgroundColor="#FFFFFF"
-      height={430}
-      region="us-east-1"
-      headerText="HalifaxFoodie Bot"
-      headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
-      greeting={
-        "Hello, how can I help? You can say things like 'help' to get more info"
-      }
-    />
   }
     </Box>
 
