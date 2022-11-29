@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import db from "../../firebase";
+import firebase from "firebase/app";
 
 function RecipeUpload() {
   const [uploadedFileName, setUploadedFileName] = useState();
@@ -46,7 +47,7 @@ function RecipeUpload() {
   const exportRecipe = async () => {
     const body = {
       filename: uploadedFileName,
-      createdTime: new Date().toLocaleString(),
+      createdTime: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
     try {

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import db from "../../firebase";
+import firebase from "firebase/app";
 
 export default function MultiFactor() {
   const history = useHistory();
@@ -93,12 +94,12 @@ try {
           localStorage.setItem("IsQuestion", true);
           localStorage.setItem("Role", dbUser.role);
           console.log(dbUser.role);
-          console.log(dbUser.count);
+          console.log(dbUser.loginCount);
           db.collection("users")
             .doc(dbUser.email)
             .update({
-              count: dbUser.count + 1,
-              lastAuthTime: new Date().toLocaleString(),
+              loginCount: dbUser.loginCount || 0 + 1,
+              lastAuthTime: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then((doc) => {
               console.log("data Submitted Successfully.");
@@ -150,8 +151,8 @@ try {
         securityAnswer: answer,
         role: role,
         username: u.username,
-        count: 0,
-        lastAuthTime: new Date().toLocaleString(),
+        loginCount: 0,
+        lastAuthTime: firebase.firestore.FieldValue.serverTimestamp(),
       };
       console.log(firebase_body);
       await axios

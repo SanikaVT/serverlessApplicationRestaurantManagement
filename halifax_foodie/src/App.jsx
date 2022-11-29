@@ -9,7 +9,7 @@ import giveRating from "./components/review/giveRating";
 
 import { useHistory } from 'react-router-dom';
 import LexChat from "react-lex";
-
+//Reference: https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
 

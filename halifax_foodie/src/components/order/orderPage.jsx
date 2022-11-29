@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { withRouter } from "react-router";
 import "./order.css";
-import Plot from 'react-plotly.js';
 
 
 export class orderPage extends Component {
@@ -15,10 +14,6 @@ export class orderPage extends Component {
       heading: "",
       title: "",
       ingredient: "",
-      polarity:"",
-      positive:0,
-      negative:0,
-      neutral:0
       
     };
   }
@@ -78,38 +73,6 @@ export class orderPage extends Component {
       ingredient: "Ingredients:" + row.ingredient,
     });
   }
-  //function to get Polarity
-  async getPolarity(row){
-    var posCount=0;
-    var negCount=0;
-    var neutCount=0;
-    await axios
-    .post(
-      "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/polarity",
-
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
-        },
-      }
-    )
-    .then((response) => {
-      response = response.data.data;
-      for (var i=0; i < response.length; i++) {
-        console.log(response[i])
-        if(response[i].Polarity=="POSITIVE")
-        posCount++;
-        else if(response[i].Polarity=="NEGATIVE")
-        negCount++;
-        else
-        neutCount++;
-     }
-     this.setState({positive:posCount,negative:negCount,neutral:neutCount})
-     this.setState({polarity:"Positive: "+posCount+" Negative: "+negCount+" Neutral: "+neutCount});
-    });
-  }
 
   render() {
     return (
@@ -128,8 +91,6 @@ export class orderPage extends Component {
                       <Card.Body>
                         <Card.Title>Food: {row.foodName}</Card.Title>
                         <Card.Title>Price: ${row.price}</Card.Title>
-                        {/* <Card.Title>Ingredients: {row.ingredient}</Card.Title> */}
-                        {/* <Card.Title>{this.state.ingredient}</Card.Title> */}
                       </Card.Body>
                     </Col>
                     <Col xs={3} md={5} className="card-item-content">
@@ -162,22 +123,8 @@ export class orderPage extends Component {
                     <Card.Title>{this.state.ingredient}</Card.Title>
                     <div></div>
                     <div></div>
-                    <Button onClick={() => this.getPolarity()}>Food Reviews Polarity</Button>
-
                   </Card.Body>
                   <div></div>
-                 { this.state.polarity==""?(<div></div>):(<Plot
-        data={[
-          {
-            x: ["Positive", "Neutral", "Negative"],
-            y: [this.state.positive, this.state.neutral, this.state.negative],
-            type: 'scatter',
-            mode: 'lines',
-          },
-          {type: 'bar', x: ["Positive", "Neutral", "Negative"], y: [this.state.positive, this.state.neutral, this.state.negative]},
-        ]}
-        layout={ {width: 400, height: 300, title: 'Reveiws Polarity Plot'} }
-      />)}
                   
                 </Col>
               </Row>
