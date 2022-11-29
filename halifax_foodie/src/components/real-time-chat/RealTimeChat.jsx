@@ -31,7 +31,7 @@ export default function RealTimeChat({sentBy}) {
 
         if(currentUser?.role?.toLowerCase() !== 'customer') {
             const users = await db.collection("users");
-            const userData = await users.where("role", "==", 'Customer').get();
+            const userData = await users.where("role", "==", 'customer').get();
 
             const customerData = []
             userData.forEach((doc) => {
