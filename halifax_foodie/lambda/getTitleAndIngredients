@@ -1,0 +1,81 @@
+import json
+import boto3
+import re
+from boto3.dynamodb.conditions import Attr
+from difflib import SequenceMatcher
+
+dynamodb = boto3.resource('dynamodb')
+comprehend = boto3.client('comprehend')
+
+def getTitle(entities):
+    title = 'Recipe Title'
+    for i in range(len(entities['Entities'])):
+        if entities['Entities'][i]['Type'] == 'TITLE':
+            title = entities['Entities'][i]['Text']
+        else:
+            continue
+    return title
+        
+def getIngredients(keyPhrases):
+    ingredients=[]
+    begin=0
+    end=0
+    for i in range(len(keyPhrases['KeyPhrases'])):
+        if 'Ingredients' in keyPhrases['KeyPhrases'][i]['Text']:
+            begin = keyPhrases['KeyPhrases'][i]['BeginOffset']
+        elif 'Process' in keyPhrases['KeyPhrases'][i]['Text']:
+            end = keyPhrases['KeyPhrases'][i]['BeginOffset']
+
+    for i in range(len(keyPhrases['KeyPhrases'])):
+        if keyPhrases['KeyPhrases'][i]['BeginOffset'] > begin and keyPhrases['KeyPhrases'][i]['BeginOffset']< end:
+            val = keyPhrases['KeyPhrases'][i]['Text']
+            val1 = val.replace('\\r\\n','')
+            ingredients.append(val1)
+    return ingredients
+    
+def loadToDynamo(title,ingredients,createdTime):
+    table = dynamodb.Table('recipes')
+    table.put_item(Item=
+    {
+        'title': title,
+        'ingredients': ingredients,
+        'createdTime':createdTime
+    })
+    
+def checkSimilarity(existingRecipes,newRecipe):
+    return SequenceMatcher(None, existingRecipes,newRecipe).ratio()>0.50
+    
+def lambda_handler(event, context):
+    s3 = boto3.client('s3')
+    # change bucket name here
+    # bucket = 'hfx-foodie-recipes'
+    bucket = 'ownrecipes'
+    # get filename from request
+    # key = 'recipe2.txt'
+    key = '/tmp/' +event['filename']
+    file = s3.get_object(Bucket = bucket , Key =key )
+    content = str(file['Body'].read())
+    recipesData = dynamodb.Table('recipes')
+    similarRecipies = []
+
+    entities = comprehend.detect_entities(Text = content , LanguageCode ='en')
+    keyPhrases = comprehend.detect_key_phrases(Text = content , LanguageCode = 'en')
+    syntax = comprehend.detect_syntax(Text = content, LanguageCode = 'en')
+    
+    title = getTitle(entities)
+    ingredients = getIngredients(keyPhrases)
+
+    loadToDynamo(title,ingredients,event['createdTime'])
+    
+    # Code to check similarity scores 
+    resource = recipesData.scan()
+
+    for item in resource['Items']:
+        if((checkSimilarity(item['ingredients'], ingredients)) and (item['title'] != title)):
+            similarRecipies.append(item['title'])
+    print(similarRecipies)
+    response= [{'title':title,'ingredients':ingredients,'similarRecipies':similarRecipies}];
+    return {
+        'statusCode': 200,
+        'body': json.dumps(response)
+    }
