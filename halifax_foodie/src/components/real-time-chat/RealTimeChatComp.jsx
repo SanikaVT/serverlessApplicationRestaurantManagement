@@ -10,7 +10,7 @@ import './RealTimeChat.scss';
 
 import { Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 
-export default function RealTimeChat({sentBy}) {
+export default function RealTimeChatComp({sentBy}) {
     const [currentUser, setCurrentUser] = useState(null)
     const [customerList, setCustomerList] = useState([])
     const [selectedCustomer, setSelectedCustomer] = useState(null)
@@ -31,7 +31,7 @@ export default function RealTimeChat({sentBy}) {
 
         if(currentUser?.role?.toLowerCase() !== 'customer') {
             const users = await db.collection("users");
-            const userData = await users.where("role", "==", 'customer').get();
+            const userData = await users.where("userRole", "==", 'customer').get();
 
             const customerData = []
             userData.forEach((doc) => {

@@ -2,14 +2,14 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { withRouter } from "react-router";
-import "./order.css";
+import "./OrderFood.css";
 
 
-export class orderPage extends Component {
+export class OrderFoodComp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: JSON.parse(localStorage.getItem("user")),
+      user: JSON.parse(localStorage.getItem("currentLocalUser")),
       food: [],
       heading: "",
       title: "",
@@ -141,4 +141,4 @@ export class orderPage extends Component {
   }
 }
 
-export default withRouter(orderPage);
+export default withRouter(OrderFoodComp);

@@ -1,25 +1,24 @@
 import { Card, Grid } from "@mui/material";
 import { Auth } from "aws-amplify";
 import React, { useEffect, useState } from "react";
+import Plot from 'react-plotly.js';
+import './Dashboard.scss';
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import Plot from 'react-plotly.js';
-
-
-import './Dashboard.scss';
 //Dashboard contains all the buttons visualization, Uplaod Recipe, Order Food etc
-export default function Dashboard() {
-  const role = localStorage.getItem("Role");
-  const history = useHistory();
-  const [currentUser, setCurrentUser] = useState(null);
+export default function DashboardComp() {
+  const currentUsrRole = localStorage.getItem("userRole");
+  const histNavigate = useHistory();
+  const [currUsr, setCurrUsr] = useState(null);
   const[positive,setPositive]=useState(0);
   const[negative,setNegative]=useState(0);
   const[neutral,setNeutral]=useState(0);
   const[polarity,setPolarity]=useState("");
 
   useEffect(() => {
-    getCurrentUser();
+    currentUsrInfo();
   }, []);
+
 //function to get Polarity
 async function getPolarity(){
   var posCount=0;
@@ -56,38 +55,39 @@ async function getPolarity(){
 
   });
 }
-  async function getCurrentUser() {
+  async function currentUsrInfo() {
     try {
       const user = await Auth.currentAuthenticatedUser({
         bypassCache: false,
       });
-      setCurrentUser({
+      setCurrUsr({
         ...user.attributes,
-        role: user.storage?.getItem("Role"),
+        role: user.storage?.getItem("userRole"),
       });
       localStorage.setItem(
         "currentUser",
         JSON.stringify({
           ...user.attributes,
-          role: user.storage?.getItem("Role"),
+          role: user.storage?.getItem("userRole"),
         })
       );
     } catch (error) {
-      history.push("/");
+      console.log(error);
+      histNavigate.push("/");
     }
   }
-  const orderitem = () => {
-    history.push("/order");
+  const fetchFoodList = () => {
+    histNavigate.push("/fetchFood");
   };
-  const recipeUpload = () => {
-    history.push("/recipeupload");
+  const ownerRecipeUpload = () => {
+    histNavigate.push("/ownerRecipeUpload");
   };
-  const visual = () => {
-    history.push("/visualization");
+  const visualizaData = () => {
+    histNavigate.push("/visualize");
   };
 
-  const chat = () => {
-    history.push("/chat");
+  const chatWithUsr = () => {
+    histNavigate.push("/chat");
   };
 
   return (
@@ -98,9 +98,9 @@ async function getPolarity(){
       columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       marginTop={"50px"}
     >
-      {role?.toLowerCase() === "customer" && (
+      {currentUsrRole?.toLowerCase() === "customer" && (
         <Grid item xs={6} className="grid-item">
-          <div className="card-item" onClick={() => orderitem()}>
+          <div className="card-item" onClick={() => fetchFoodList()}>
             <Card className="card" variant="outlined">
               Order Food
             </Card>
@@ -109,23 +109,23 @@ async function getPolarity(){
       )}
 
       <Grid item xs={6} className="grid-item">
-        <div className="card-item" onClick={() => visual()}>
+        <div className="card-item" onClick={() => visualizaData()}>
           <Card className="card" variant="outlined">
             Visualization
           </Card>
         </div>
       </Grid>
 
-      {role?.toLowerCase() !== "customer" && (
+      {currentUsrRole?.toLowerCase() !== "customer" && (
         <Grid item xs={6} className="grid-item">
-          <div className="card-item" onClick={() => recipeUpload()}>
+          <div className="card-item" onClick={() => ownerRecipeUpload()}>
             <Card className="card" variant="outlined">
               Recipe Upload
             </Card>
           </div>
         </Grid>
       )}
-       {role?.toLowerCase() !== "customer" && (
+       {currentUsrRole?.toLowerCase() !== "customer" && (
         <Grid item xs={6} className="grid-item">
           <div className="card-item" onClick={() => getPolarity()}>
             <Card className="card" variant="outlined">
@@ -134,10 +134,8 @@ async function getPolarity(){
           </div>
         </Grid>
       )}
-      
-
       <Grid item xs={6} className="grid-item">
-        <div className="card-item" onClick={() => chat()}>
+        <div className="card-item" onClick={() => chatWithUsr()}>
           <Card className="card" variant="outlined">
             Chat
           </Card>

@@ -1,122 +1,109 @@
 import { Auth } from "aws-amplify";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import db from "../../firebase";
 import firebase from "firebase/app";
 
 export default function MultiFactor() {
-  const history = useHistory();
+  const histNavigate = useHistory();
 
-  const [answer, setanswer] = useState("");
-  const [key, setKey] = useState("");
-  const [value, setValue] = useState("");
-  const question = "What is Your favorite color?";
-  const [role, setRole] = useState("customer");
-  const [setQuestion, setsetQuestion] = useState();
-  const [cipher, setCipher] = useState("");
-  var dbUser;
+  const [secondFacAns, setSecondFacAns] = useState("");
+  const [thirdFacKey, setThirdFacKey] = useState("");
+  const [thirdFacText, setThirdFacText] = useState("");
+  const secondFactorQuestion = "What is Your favorite color?";
+  const [currentUsrRole, setCurrentUsrRole] = useState("customer");
+  const [ques, setQues] = useState();
+  const [generatedCipher, setGeneratedCipher] = useState("");
+  var firebaseUser;
   useEffect(async () => {
-    let dbUser;
+    let firebaseUsr;
     //Checking if the user is a registered user
-    !JSON.parse(localStorage.getItem("IsQuestion")) &&
+    !JSON.parse(localStorage.getItem("isVerifiedUsr")) &&
       (await Auth.currentUserPoolUser().then((obj) => {
-        const user = {
+        const regUser = {
           username: obj.username,
           email: obj.attributes.email,
         };
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("IsQuestion", false);
+        localStorage.setItem("currentLocalUser", JSON.stringify(regUser));
+        localStorage.setItem("isVerifiedUsr", false);
       }));
-    const user = JSON.parse(localStorage.getItem("user"));
-    const users = await db.collection("users");
-    const userData = await users.where("username", "==", user.username).get();
+    const currUSr = JSON.parse(localStorage.getItem("currentLocalUser"));
+    const firebaseUsers = await db.collection("users");
+    const userInfo = await firebaseUsers.where("username", "==", currUSr.username).get();
 
-    userData.forEach((doc) => {
-      dbUser = doc.data();
+    userInfo.forEach((doc) => {
+      firebaseUsr = doc.data();
     });
-    console.log(dbUser);
 
-    if (dbUser) {
-      setsetQuestion(true);
+    if (firebaseUsr) {
+      setQues(true);
     } else {
-      setsetQuestion(false);
+      setQues(false);
     }
   }, []);
 
   const generateCipherText = async () => {
-    var u = JSON.parse(localStorage.getItem("user"));
+    var currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
 
 //sign-up third factor
 var body = {
-  email: u.email,
-  userName: u.username,
-  role: role,
-  key: key,
-  plainText: value,
+  email: currentUsr.email,
+  userName: currentUsr.username,
+  role: currentUsrRole,
+  key: thirdFacKey,
+  plainText: thirdFacText,
 };
 console.log(body);
 //Reference: https://axios-http.com/docs/post_example
-
 try {
-  let result = await axios.post(
+  let response = await axios.post(
     "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addcipher",
 
     JSON.stringify(body),
     { headers: { "Content-Type": "application/json" } }
   );
-  console.log("op", result);
-  setCipher(result.data.body)
-} catch (error) {
-  console.error(error);
-}
+  setGeneratedCipher(response.data.body)
+} catch (err) {}
   };
 
   // On submit, perform 2nd and 3rd factor authentication, first check 2nd factor auth and if the answer is invalid, show invalid answer otherwise perform third factor auth
   const onSubmitForm = async (e) => {
     e.preventDefault();
+    if (ques) {
+      const currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
+      firebaseUser = {};
 
-    console.log(setQuestion);
-    if (setQuestion) {
-      const user = JSON.parse(localStorage.getItem("user"));
-      dbUser = {};
+      const firebaseUsers = await db.collection("users");
+      const usrInfo = await firebaseUsers.where("username", "==", currentUsr.username).get();
 
-      const users = await db.collection("users");
-      const userData = await users.where("username", "==", user.username).get();
-
-      userData.forEach((doc) => {
-        dbUser = doc.data();
+      usrInfo.forEach((doc) => {
+        firebaseUser = doc.data();
       });
-      console.log(dbUser.securityAnswer);
-      var count;
-      if (dbUser.securityAnswer) {
-        if (answer === dbUser?.securityAnswer) {
-          localStorage.setItem("IsQuestion", true);
-          localStorage.setItem("Role", dbUser.role);
-          console.log(dbUser.role);
-          console.log(dbUser.loginCount);
+      if (firebaseUser.securityAnswer) {
+        if (secondFacAns === firebaseUser?.securityAnswer) {
+          localStorage.setItem("isVerifiedUsr", true);
+          localStorage.setItem("userRole", firebaseUser.role);
+          console.log(firebaseUser.loginCount);
           db.collection("users")
-            .doc(dbUser.email)
+            .doc(firebaseUser.email)
             .update({
-              loginCount: dbUser.loginCount || 0 + 1,
+              loginCount: firebaseUser.loginCount || 0 + 1,
               lastAuthTime: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then((doc) => {
-              console.log("data Submitted Successfully.");
             })
             .catch((err) => {
-              console.error("error:", err);
             });
         } else {
-          alert("invalid answer");
+          alert("Please Enter a valid answer");
         }
       }
 
       //login 3rd factor
       var body = {
-        cipher: cipher,
-        username: user.username,
+        cipher: generatedCipher,
+        username: currentUsr.username,
       };
       console.log(body);
     //Reference: https://axios-http.com/docs/post_example
@@ -127,8 +114,7 @@ try {
 
           {
             headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Credentials": "true",
+         
               "Content-Type": "application/json",
             },
             crossDomain: true,
@@ -136,23 +122,21 @@ try {
           }
         )
         .then((response) => {
-          console.log(response);
-          history.push("/");
+          histNavigate.push("/");
           window.location.reload();
         })
         .catch((err) => {
-          console.log("error", err);
         });
     } else {
-      var u = JSON.parse(localStorage.getItem("user"));
+      var currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
 
       //signup 2nd factor
       const firebase_body = {
-        email: u.email,
-        securityQuestion: question,
-        securityAnswer: answer,
-        role: role,
-        username: u.username,
+        email: currentUsr.email,
+        securityQuestion: secondFactorQuestion,
+        securityAnswer: secondFacAns,
+        role: currentUsrRole,
+        username: currentUsr.username,
         loginCount: 0,
         lastAuthTime: firebase.firestore.FieldValue.serverTimestamp(),
       };
@@ -160,19 +144,16 @@ try {
       await axios
         .post(
           "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addtofirebase",
-
           JSON.stringify(firebase_body),
           { headers: { "Content-Type": "application/json" } }
         )
         .then((response) => {
-          console.log(response);
-          localStorage.setItem("IsQuestion", true);
-          localStorage.setItem("Role", role);
-          history.push("/");
+          localStorage.setItem("isVerifiedUsr", true);
+          localStorage.setItem("userRole", currentUsrRole);
+          histNavigate.push("/");
           window.location.reload();
         })
         .catch((err) => {
-          console.log("error", err);
         });
       
     }
@@ -185,20 +166,20 @@ try {
           <div className="card-body">
             <form onSubmit={(e) => onSubmitForm(e)}>
               <div className="mb-5">
-                {setQuestion ? (
+                {ques ? (
                   <div></div>
                 ) : (
                   <div>
                     <div>
-                      <h4> Enter Role</h4>
+                      <h4>Enter User Role</h4>
                     </div>
                     <div>
-                      <span>Please enter your role here</span>
+                      <span>Please Enter user role</span>
                       <input
                         className="input-design top-space form-control"
                         type="text"
-                        value={role}
-                        onChange={(e) => setRole(e.target.value.toLowerCase())}
+                        value={currentUsrRole}
+                        onChange={(e) => setCurrentUsrRole(e.target.value.toLowerCase())}
                         placeholder="Customer"
                       />
                     </div>
@@ -208,20 +189,20 @@ try {
 
               <div></div>
               <div className="mb-5">
-                {setQuestion ? (
-                  <h4>2nd Factor Authentication</h4>
+                {ques ? (
+                  <h4>2nd-Factor Auth</h4>
                 ) : (
-                  <h4>Set up 2nd Factor Authentication</h4>
+                  <h4>Set up 2nd-Factor Auth</h4>
                 )}
 
                 <div className="cus-form form-top-space">
-                  <span>What is Your favorite color?</span>
+                  <span>{secondFactorQuestion}</span>
                   <input
                     className="input-design top-space form-control"
                     type="text"
-                    value={answer}
-                    onChange={(e) => setanswer(e.target.value)}
-                    placeholder="Your Answer"
+                    value={secondFacAns}
+                    onChange={(e) => setSecondFacAns(e.target.value)}
+                    placeholder="Enter your answer"
                   />
                 </div>
               </div>
@@ -229,48 +210,48 @@ try {
               <div></div>
 
               <div className="mb-5">
-                {setQuestion ? (
+                {ques ? (
                   <div>
-                    <h4>3rd Factor Authentication</h4>
+                    <h4>3rd-Factor Auth</h4>
                     <div className="cus-form form-top-space">
-                      <span>Enter a cipher</span>
+                      <span>Enter a Cipher Text</span>
                       <input
                         className="input-design top-space form-control"
                         type="text"
-                        value={cipher}
-                        onChange={(e) => setCipher(e.target.value)}
+                        value={generatedCipher}
+                        onChange={(e) => setGeneratedCipher(e.target.value)}
                         placeholder="Enter cipher value"
                       />
                     </div>
                   </div>
                 ) : (
                   <div>
-                    <h4>Set Up 3rd Factor Authentication</h4>
+                    <h4>Set Up 3rd-Factor Auth</h4>
                     <div className="cus-form form-top-space">
-                      <span>Enter a key</span>
+                      <span>Enter key</span>
                       <input
                         className="input-design top-space form-control"
                         type="text"
-                        value={key}
-                        onChange={(e) => setKey(e.target.value)}
+                        value={thirdFacKey}
+                        onChange={(e) => setThirdFacKey(e.target.value)}
                         placeholder="Enter key"
                       />
                     </div>
 
                     <div className="cus-form form-top-space">
-                      <span>Enter a value</span>
+                      <span>Enter plain text</span>
                       <input
                         className="input-design top-space form-control"
                         type="text"
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
+                        value={thirdFacText}
+                        onChange={(e) => setThirdFacText(e.target.value)}
                         placeholder="Enter Value"
                       />
                     </div>
                     <div className="mb-3"></div>
-                    <Button onClick={generateCipherText}>Generate Cipher</Button>
+                    <button onClick={generateCipherText}>Generate Cipher</button>
                     <div className="mb-2"></div>
-                    <span>{cipher}</span>
+                    <span>{generatedCipher}</span>
                   </div>
                 )}
               </div>

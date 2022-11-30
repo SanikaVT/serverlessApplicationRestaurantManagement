@@ -2,12 +2,12 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Button, Row } from "react-bootstrap";
 import { withRouter } from "react-router";
-export class giveRating extends Component {
+export class RateOrderComp extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: JSON.parse(localStorage.getItem("user")),
+      user: JSON.parse(localStorage.getItem("currentLocalUser")),
       rating: "",
       foodId: props.location.state.foodId,
     };
@@ -42,7 +42,7 @@ export class giveRating extends Component {
   };
 
   cancel = (e) => {
-    this.props.history.push("/order");
+    this.props.history.push("/fetchFood");
   };
   render() {
     return (
@@ -71,4 +71,4 @@ export class giveRating extends Component {
     );
   }
 }
-export default withRouter(giveRating);
+export default withRouter(RateOrderComp);

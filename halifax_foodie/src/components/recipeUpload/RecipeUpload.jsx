@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import db from "../../firebase";
 import firebase from "firebase/app";
 
-function RecipeUpload() {
+function RecipeUploadComp() {
   const [uploadedFileName, setUploadedFileName] = useState();
   const [fileContent, setFileContent] = useState("");
   const [title, setTitle] = useState("");
@@ -161,4 +161,4 @@ function RecipeUpload() {
   );
 }
 
-export default RecipeUpload;
+export default RecipeUploadComp;

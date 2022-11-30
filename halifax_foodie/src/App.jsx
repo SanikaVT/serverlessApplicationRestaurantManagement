@@ -1,11 +1,11 @@
 import React from "react";
 // import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { BrowserRouter as Router, NavLink, Route, Switch } from "react-router-dom";
-import Dashboard from "./components/dashboard/Dashboard";
-import Order from "./components/order/orderPage";
-import RealTimeChat from './components/real-time-chat/RealTimeChat';
-import RecipeUpload from "./components/recipeUpload/RecipeUpload";
-import giveRating from "./components/review/giveRating";
+import DashboardComp from "./components/dashboard/Dashboard";
+import Order from "./components/order/OrderFood";
+import RealTimeChatComp from './components/real-time-chat/RealTimeChatComp';
+import RecipeUploadComp from "./components/recipeUpload/RecipeUpload";
+import RateOrderComp from "./components/review/RateOrder";
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
@@ -13,7 +13,7 @@ import '@aws-amplify/ui-react/styles.css';
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import "../src/main.css";
 import './App.scss';
-import MultiFactor from "./components/mfa/Mfa";
+import MultiFactor from "./components/mfa/MultiFactorAuth";
 import Visualization from "./components/visualization/Visualization";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
     window.location.reload();
   };
 
-  let isQuestion = !!JSON.parse(localStorage.getItem("IsQuestion"))
+  let isVerified = !!JSON.parse(localStorage.getItem("isVerifiedUsr"))
 //https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components
 
   return (
@@ -40,15 +40,15 @@ function App() {
             </Toolbar>
           </AppBar>
           {
-            isQuestion ?
+            isVerified ?
             <Switch>
-                <Route exact path="/" component={Dashboard} />
+                <Route exact path="/" component={DashboardComp} />
                 <Route exact path="/question" component={MultiFactor} />
-                <Route exact path="/giveratings" component={giveRating} />
-                <Route exact path="/chat" component={RealTimeChat} />
-                <Route exact path="/order" component={Order} />
-                <Route exact path="/recipeupload" component={RecipeUpload} />
-                <Route exact path="/visualization" component={Visualization} />
+                <Route exact path="/giveratings" component={RateOrderComp} />
+                <Route exact path="/chat" component={RealTimeChatComp} />
+                <Route exact path="/fetchFood" component={Order} />
+                <Route exact path="/ownerRecipeUpload" component={RecipeUploadComp} />
+                <Route exact path="/visualize" component={Visualization} />
             </Switch>
             :
             <Switch>
