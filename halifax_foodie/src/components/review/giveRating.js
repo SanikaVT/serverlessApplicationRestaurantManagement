@@ -27,6 +27,8 @@ export class giveRating extends Component {
     };
 
     try {
+      //Reference: https://axios-http.com/docs/post_example
+
       let result = await axios.post(
         "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addreview",
 

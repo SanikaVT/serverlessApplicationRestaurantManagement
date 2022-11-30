@@ -18,7 +18,9 @@ export class orderPage extends Component {
     };
   }
   //Fetches food from dynamodb
+  //https://reactjs.org/docs/react-component.html
   async componentDidMount() {
+      //Reference: https://axios-http.com/docs/post_example
     await axios
       .post(
         "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/fetchfood",
@@ -51,6 +53,8 @@ export class orderPage extends Component {
     };
     console.log(body)
     try {
+        //Reference: https://axios-http.com/docs/post_example
+
       let result = await axios.post(
         "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addorder",
 

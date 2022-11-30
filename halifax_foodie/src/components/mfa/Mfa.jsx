@@ -57,6 +57,7 @@ var body = {
   plainText: value,
 };
 console.log(body);
+//Reference: https://axios-http.com/docs/post_example
 
 try {
   let result = await axios.post(
@@ -118,6 +119,7 @@ try {
         username: user.username,
       };
       console.log(body);
+    //Reference: https://axios-http.com/docs/post_example
 
       await axios
         .post(

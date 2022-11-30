@@ -8,8 +8,9 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Amplify } from "aws-amplify";
 import config from "./aws-exports";
 import LexChat from "react-lex";
-
+//https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components
 Amplify.configure(config);
+// Reference: https://www.npmjs.com/package/react-lex-plus
 
 ReactDOM.render(
   <React.StrictMode>

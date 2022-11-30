@@ -24,11 +24,11 @@ function App() {
   };
 
   let isQuestion = !!JSON.parse(localStorage.getItem("IsQuestion"))
+//https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components
 
   return (
     <Box sx={{ flexGrow: 1 }} className="app">
 
-      {/* {//references: */}
       {/* //https://mui.com/material-ui/react-app-bar/} */}
         <Router>
           <AppBar position="static">

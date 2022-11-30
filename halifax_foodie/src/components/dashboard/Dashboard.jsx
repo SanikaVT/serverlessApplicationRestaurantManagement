@@ -25,6 +25,7 @@ async function getPolarity(){
   var posCount=0;
   var negCount=0;
   var neutCount=0;
+  //Reference: https://axios-http.com/docs/post_example
   await axios
   .post(
     "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/polarity",
