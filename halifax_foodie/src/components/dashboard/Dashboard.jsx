@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 //Dashboard contains all the buttons visualization, Uplaod Recipe, Order Food etc
 export default function DashboardComp() {
+  //https://reactjs.org/docs/hooks-state.html
   const currentUsrRole = localStorage.getItem("userRole");
   const histNavigate = useHistory();
   const [currUsr, setCurrUsr] = useState(null);
@@ -111,7 +112,7 @@ async function getPolarity(){
       <Grid item xs={6} className="grid-item">
         <div className="card-item" onClick={() => visualizaData()}>
           <Card className="card" variant="outlined">
-            Visualization
+            Visualize Data
           </Card>
         </div>
       </Grid>
@@ -120,7 +121,7 @@ async function getPolarity(){
         <Grid item xs={6} className="grid-item">
           <div className="card-item" onClick={() => ownerRecipeUpload()}>
             <Card className="card" variant="outlined">
-              Recipe Upload
+              Upload Recipe
             </Card>
           </div>
         </Grid>
@@ -129,7 +130,7 @@ async function getPolarity(){
         <Grid item xs={6} className="grid-item">
           <div className="card-item" onClick={() => getPolarity()}>
             <Card className="card" variant="outlined">
-              Reviews Polarity
+              Review Polarity
             </Card>
           </div>
         </Grid>

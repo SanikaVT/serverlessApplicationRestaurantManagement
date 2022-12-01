@@ -11,10 +11,10 @@ function RecipeUploadComp() {
   const [similarRecipe, setSimilarRecipe] = useState("");
   const [displaySimilarRecipe, setDisplaySimilarRecipe] = useState("");
 
-  const inputRef = useRef();
+  const ipRef = useRef();
 
   const handleUpload = () => {
-    inputRef.current?.click();
+    ipRef.current?.click();
   };
 
   const handleSubmit = async () => {
@@ -25,7 +25,7 @@ function RecipeUploadComp() {
 
     try {
         //Reference: https://axios-http.com/docs/post_example
-      let result = await axios.post(
+       await axios.post(
         "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addrecipe",
 
         JSON.stringify(body),
@@ -35,7 +35,6 @@ function RecipeUploadComp() {
           },
         }
       );
-      console.log(result);
     } catch (error) {
       console.error(error);
     }
@@ -62,9 +61,6 @@ function RecipeUploadComp() {
           },
         }
       );
-      console.log(uploadedFileName);
-      console.log(result.data.body);
-
       result = JSON.parse(result.data.body);
       console.log(result);
       setTitle(result[0].title);
@@ -79,10 +75,8 @@ function RecipeUploadComp() {
       db.collection("recipes")
         .add(recipe)
         .then((doc) => {
-          console.log("data Submitted Successfully.");
         })
         .catch((err) => {
-          console.error("error:", err);
         });
    
     } catch (error) {
@@ -91,24 +85,22 @@ function RecipeUploadComp() {
   };
     
   //Code to uplaod recipe file from the system
-  const handleDisplayFileDetails = () => {
-    inputRef.current?.files &&
-      setUploadedFileName(inputRef.current.files[0].name);
-    console.log(inputRef.current.files[0]);
-    const reader = new FileReader();
-    reader.readAsText(inputRef.current.files[0]);
-    reader.onload = async (e) => {
-      const text = e.target.result;
-      console.log(text);
-      setFileContent(text);
+  const uploadFileFromSystem = () => {
+    ipRef.current?.files &&
+      setUploadedFileName(ipRef.current.files[0].name);
+    const fileReader = new FileReader();
+    fileReader.readAsText(ipRef.current.files[0]);
+    fileReader.onload = async (e) => {
+      const txt = e.target.result;
+      setFileContent(txt);
     };
   };
   return (
     <div className="m-3">
       <label className="mx-3">Upload a new recipe:</label>
       <input
-        ref={inputRef}
-        onChange={handleDisplayFileDetails}
+        ref={ipRef}
+        onChange={uploadFileFromSystem}
         className="d-none"
         type="file"
       />

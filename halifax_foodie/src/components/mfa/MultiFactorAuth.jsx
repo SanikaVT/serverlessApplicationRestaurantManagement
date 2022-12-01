@@ -7,26 +7,27 @@ import firebase from "firebase/app";
 
 export default function MultiFactor() {
   const histNavigate = useHistory();
-
+//https://reactjs.org/docs/hooks-state.html
   const [secondFacAns, setSecondFacAns] = useState("");
   const [thirdFacKey, setThirdFacKey] = useState("");
   const [thirdFacText, setThirdFacText] = useState("");
   const secondFactorQuestion = "What is Your favorite color?";
   const [currentUsrRole, setCurrentUsrRole] = useState("customer");
   const [ques, setQues] = useState();
+  const [verified, setVerified]=useState();
   const [generatedCipher, setGeneratedCipher] = useState("");
-  var firebaseUser;
+  var firebaseUsr;
   useEffect(async () => {
     let firebaseUsr;
     //Checking if the user is a registered user
-    !JSON.parse(localStorage.getItem("isVerifiedUsr")) &&
+    !JSON.parse(localStorage.getItem("isVerifiedQues")) &&
       (await Auth.currentUserPoolUser().then((obj) => {
         const regUser = {
           username: obj.username,
           email: obj.attributes.email,
         };
         localStorage.setItem("currentLocalUser", JSON.stringify(regUser));
-        localStorage.setItem("isVerifiedUsr", false);
+        localStorage.setItem("isVerifiedQues", false);
       }));
     const currUSr = JSON.parse(localStorage.getItem("currentLocalUser"));
     const firebaseUsers = await db.collection("users");
@@ -44,8 +45,8 @@ export default function MultiFactor() {
   }, []);
 
   const generateCipherText = async () => {
-    var currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
-
+    
+  var currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
 //sign-up third factor
 var body = {
   email: currentUsr.email,
@@ -54,7 +55,7 @@ var body = {
   key: thirdFacKey,
   plainText: thirdFacText,
 };
-console.log(body);
+
 //Reference: https://axios-http.com/docs/post_example
 try {
   let response = await axios.post(
@@ -72,23 +73,23 @@ try {
     e.preventDefault();
     if (ques) {
       const currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
-      firebaseUser = {};
+      firebaseUsr = {};
 
       const firebaseUsers = await db.collection("users");
       const usrInfo = await firebaseUsers.where("username", "==", currentUsr.username).get();
 
       usrInfo.forEach((doc) => {
-        firebaseUser = doc.data();
+        firebaseUsr = doc.data();
       });
-      if (firebaseUser.securityAnswer) {
-        if (secondFacAns === firebaseUser?.securityAnswer) {
-          localStorage.setItem("isVerifiedUsr", true);
-          localStorage.setItem("userRole", firebaseUser.role);
-          console.log(firebaseUser.loginCount);
+      if (firebaseUsr.securityAnswer) {
+        if (secondFacAns === firebaseUsr?.securityAnswer) {
+          localStorage.setItem("isVerifiedQues", true);
+          localStorage.setItem("userRole", firebaseUsr.role);
+          console.log(firebaseUsr.loginCount);
           db.collection("users")
-            .doc(firebaseUser.email)
+            .doc(firebaseUsr.email)
             .update({
-              loginCount: firebaseUser.loginCount || 0 + 1,
+              loginCount: firebaseUsr.loginCount || 0 + 1,
               lastAuthTime: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then((doc) => {
@@ -111,19 +112,29 @@ try {
       await axios
         .post(
           "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/thirdfactor",
+          JSON.stringify(body),
 
           {
             headers: {
          
               "Content-Type": "application/json",
             },
-            crossDomain: true,
-            body: JSON.stringify(body),
           }
         )
         .then((response) => {
+          response=JSON.parse(response.data.body);
+          var message= response[0].message;
+          if(message=="User Not Verified")
+          {
+           alert(message); 
+           localStorage.setItem("isVerifiedQues", false);
+          }
+          else{
+          setVerified(verified)
           histNavigate.push("/");
           window.location.reload();
+          }
+          
         })
         .catch((err) => {
         });
@@ -148,7 +159,7 @@ try {
           { headers: { "Content-Type": "application/json" } }
         )
         .then((response) => {
-          localStorage.setItem("isVerifiedUsr", true);
+          localStorage.setItem("isVerifiedQues", true);
           localStorage.setItem("userRole", currentUsrRole);
           histNavigate.push("/");
           window.location.reload();

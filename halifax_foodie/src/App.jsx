@@ -23,7 +23,7 @@ function App() {
     window.location.reload();
   };
 
-  let isVerified = !!JSON.parse(localStorage.getItem("isVerifiedUsr"))
+  let isVerified = !!JSON.parse(localStorage.getItem("isVerifiedQues"))
 //https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components
 
   return (
@@ -44,7 +44,7 @@ function App() {
             <Switch>
                 <Route exact path="/" component={DashboardComp} />
                 <Route exact path="/question" component={MultiFactor} />
-                <Route exact path="/giveratings" component={RateOrderComp} />
+                <Route exact path="/postReview" component={RateOrderComp} />
                 <Route exact path="/chat" component={RealTimeChatComp} />
                 <Route exact path="/fetchFood" component={Order} />
                 <Route exact path="/ownerRecipeUpload" component={RecipeUploadComp} />

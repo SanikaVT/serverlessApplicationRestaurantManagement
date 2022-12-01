@@ -7,63 +7,62 @@ export class RateOrderComp extends Component {
     super(props);
 
     this.state = {
-      user: JSON.parse(localStorage.getItem("currentLocalUser")),
-      rating: "",
-      foodId: props.location.state.foodId,
+      currUsr: JSON.parse(localStorage.getItem("currentLocalUser")),
+      review: "",
+      f_id: props.location.state.foodId,
     };
   }
-  onValueChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  };
 
-  saveItem = async (event) => {
+  submitReview = async (event) => {
     event.preventDefault();
     const body = {
-      ratings: this.state.rating,
-      username: this.state.user.username,
-      foodId: this.state.foodId,
+      ratings: this.state.review,
+      username: this.state.currUsr.username,
+      foodId: this.state.f_id,
     };
 
     try {
       //Reference: https://axios-http.com/docs/post_example
-
-      let result = await axios.post(
+      await axios.post(
         "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addreview",
 
         JSON.stringify(body),
         { headers: { "Content-Type": "application/json" } }
       );
-      this.cancel();
+      this.cancelItem();
     } catch (error) {
       console.error(error.response.data); // NOTE - use "error.response.data` (not "error")
     }
   };
 
-  cancel = (e) => {
+  cancelItem = (e) => {
     this.props.history.push("/fetchFood");
+  };
+
+  onValueChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
   };
   render() {
     return (
       <Row className="rating-content">
         <div>
-          <h2>Please give your review</h2>
+          <h2>Rate your Order</h2>
         </div>
         <div>
           <input
             type="text"
-            palceholder="Add task"
-            name="rating"
-            value={this.state.rating}
+            name="review"
+            value={this.state.review}
             onChange={this.onValueChange}
           />
         </div>
         <div className="add-button">
-          <Button className="primary-button" onClick={this.saveItem}>
+          <Button className="primary-button" onClick={this.submitReview}>
             Submit
           </Button>
-          <Button className="primary-button" onClick={this.cancel}>
+          <Button className="primary-button" onClick={this.cancelItem}>
             Cancel
           </Button>
         </div>
