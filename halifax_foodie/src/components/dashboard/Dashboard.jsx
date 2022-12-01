@@ -41,17 +41,17 @@ async function getPolarity(){
   .then((response) => {
     response = response.data.data;
     for (var i=0; i < response.length; i++) {
-      console.log(response[i])
-      if(response[i].Polarity=="POSITIVE")
-      posCount++;
-      else if(response[i].Polarity=="NEGATIVE")
-      negCount++;
-      else
-      neutCount++;
-   }
-   setPositive(posCount);
-   setNegative(negCount);
-   setNeutral(neutCount);
+      if(response[i].Polarity=="POSITIVE") {
+        posCount++;
+      }else if(response[i].Polarity=="NEGATIVE") {
+        negCount++;
+      } else {
+        neutCount++;
+      }
+  }
+  setPositive(posCount);
+  setNegative(negCount);
+  setNeutral(neutCount);
   setPolarity("Polarity: Positive: "+posCount+" Negative: "+negCount+" Neutral: "+neutCount);
 
   });
@@ -109,13 +109,17 @@ async function getPolarity(){
         </Grid>
       )}
 
-      <Grid item xs={6} className="grid-item">
-        <div className="card-item" onClick={() => visualizaData()}>
-          <Card className="card" variant="outlined">
-            Visualize Data
-          </Card>
-        </div>
-      </Grid>
+      {/* show visualization only to owner */}
+      {
+        currentUsrRole?.toLowerCase() !== "customer" &&
+        <Grid item xs={6} className="grid-item">
+          <div className="card-item" onClick={() => visualizaData()}>
+            <Card className="card" variant="outlined">
+              Visualize Data
+            </Card>
+          </div>
+        </Grid>
+      }
 
       {currentUsrRole?.toLowerCase() !== "customer" && (
         <Grid item xs={6} className="grid-item">
@@ -126,7 +130,8 @@ async function getPolarity(){
           </div>
         </Grid>
       )}
-       {currentUsrRole?.toLowerCase() !== "customer" && (
+
+      {currentUsrRole?.toLowerCase() !== "customer" && (
         <Grid item xs={6} className="grid-item">
           <div className="card-item" onClick={() => getPolarity()}>
             <Card className="card" variant="outlined">
@@ -135,6 +140,7 @@ async function getPolarity(){
           </div>
         </Grid>
       )}
+
       <Grid item xs={6} className="grid-item">
         <div className="card-item" onClick={() => chatWithUsr()}>
           <Card className="card" variant="outlined">
@@ -144,7 +150,8 @@ async function getPolarity(){
       </Grid>
 
       <Grid item xs={12} className="grid-item">
-      { polarity==""?(<div></div>):(<Plot
+      { polarity &&
+        <Plot
         data={[
           {
             x: ["Positive", "Neutral", "Negative"],
@@ -155,7 +162,7 @@ async function getPolarity(){
           {type: 'bar', x: ["Positive", "Neutral", "Negative"], y: [positive, neutral,negative]},
         ]}
         layout={ {width: 400, height: 300, title: 'Reveiws Polarity Plot'} }
-      />)}
+      />}
       </Grid>
     </Grid>
   );

@@ -1,3 +1,6 @@
+//references
+//https://www.youtube.com/watch?v=zQyrwxMPm88&t=60s
+
 import React, {useState, useRef} from 'react'
 import db from "../../firebase";
 import { useCollectionData } from 'react-firebase-hooks/firestore';

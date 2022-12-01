@@ -10,12 +10,6 @@ export default function ChatMessage({currentUser, message}) {
     return (
         <>
         <div className={`message ${messageClass}`}>
-            <img
-                alt=""
-                src={
-                    "https://api.adorable.io/avatars/23/abott@adorable.png"
-                }
-                />
             <p>{text}</p>
         </div>
         </>

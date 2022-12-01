@@ -51,7 +51,7 @@ function RecipeUploadComp() {
     };
 
     try {
-        //Reference: https://axios-http.com/docs/post_example
+      //Reference: https://axios-http.com/docs/post_example
       let result = await axios.post(
         "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/exportrecipe",
         JSON.stringify(body),
@@ -62,28 +62,26 @@ function RecipeUploadComp() {
         }
       );
       result = JSON.parse(result.data.body);
-      console.log(result);
       setTitle(result[0].title);
-      setIngredients((result[0].ingredients).toString());
+      setIngredients(result[0].ingredients.toString());
       setSimilarRecipe(result[0].similarRecipies);
       const recipe = {
         title: title,
         ingredients: ingredients,
         createdTime: new Date().toLocaleString(),
       };
-  
+
       db.collection("recipes")
         .add(recipe)
         .then((doc) => {
         })
         .catch((err) => {
         });
-   
     } catch (error) {
       console.error(error); // NOTE - use "error.response.data` (not "error")
     }
   };
-    
+
   //Code to uplaod recipe file from the system
   const uploadFileFromSystem = () => {
     ipRef.current?.files &&

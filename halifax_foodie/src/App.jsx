@@ -41,6 +41,8 @@ function App() {
           </AppBar>
           {
             isVerified ?
+            // references
+            // https://v5.reactrouter.com/web/guides/quick-start
             <Switch>
                 <Route exact path="/" component={DashboardComp} />
                 <Route exact path="/question" component={MultiFactor} />
