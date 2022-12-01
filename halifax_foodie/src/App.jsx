@@ -17,12 +17,15 @@ import MultiFactor from "./components/mfa/MultiFactorAuth";
 import Visualization from "./components/visualization/Visualization";
 import PolarityComponent from "./components/polarity/PolarityComponent";
 
-function App() {
 
+function App() {
+ 
   const logout = () => {
     localStorage.clear();
     window.location.reload();
   };
+  localStorage.setItem("isChat","false");
+  // UserContext.setChat(false);
 
   let isVerified = !!JSON.parse(localStorage.getItem("isVerifiedQues"))
 //https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components

@@ -25,8 +25,6 @@ export default function DashboardComp() {
   //   return () => clearInterval(interval);
   // },[]);
 
-
-
   async function getCheck() {
     await axios
     .post(
@@ -43,6 +41,7 @@ export default function DashboardComp() {
       if(flag=="true")
       {
         histNavigate.push("/chat");
+        window.location.reload();
       }
     });    
   }

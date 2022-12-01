@@ -9,7 +9,7 @@ import ChatMessage from './ChatMessage'
 import { Button, OutlinedInput } from '@mui/material';
 import axios from "axios";
 import { NavLink } from 'react-router-dom';
-
+import { useEffect } from 'react';
 
 export default function ChatRoom({currentUser, chatWith}) {
 
@@ -22,7 +22,10 @@ export default function ChatRoom({currentUser, chatWith}) {
     const [messages] = useCollectionData(query, { idField: "id" });
 
     const dummy = useRef();
-
+    useEffect(() => {
+     localStorage.setItem("isChat","true");
+    }, [])
+    
     function getFilteredMessages() {
         if(!messages)return
         const usersSet = new Set([sentBy, sentTo]);
@@ -60,6 +63,10 @@ export default function ChatRoom({currentUser, chatWith}) {
     )
     .then((response) => {
         console.log(response)
+        localStorage.setItem("isChat","false");
+        window.location.reload();
+
+
     }); 
     };
 
