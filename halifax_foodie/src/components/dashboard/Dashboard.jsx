@@ -1,61 +1,20 @@
 import { Card, Grid } from "@mui/material";
 import { Auth } from "aws-amplify";
 import React, { useEffect, useState } from "react";
-import Plot from 'react-plotly.js';
 import './Dashboard.scss';
 import { useHistory } from "react-router-dom";
-import axios from "axios";
+
 //Dashboard contains all the buttons visualization, Uplaod Recipe, Order Food etc
 export default function DashboardComp() {
   //https://reactjs.org/docs/hooks-state.html
   const currentUsrRole = localStorage.getItem("userRole");
   const histNavigate = useHistory();
   const [currUsr, setCurrUsr] = useState(null);
-  const[positive,setPositive]=useState(0);
-  const[negative,setNegative]=useState(0);
-  const[neutral,setNeutral]=useState(0);
-  const[polarity,setPolarity]=useState("");
 
   useEffect(() => {
     currentUsrInfo();
   }, []);
 
-//function to get Polarity
-async function getPolarity(){
-  var posCount=0;
-  var negCount=0;
-  var neutCount=0;
-  //Reference: https://axios-http.com/docs/post_example
-  await axios
-  .post(
-    "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/polarity",
-
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": "true",
-      },
-    }
-  )
-  .then((response) => {
-    response = response.data.data;
-    for (var i=0; i < response.length; i++) {
-      if(response[i].Polarity=="POSITIVE") {
-        posCount++;
-      }else if(response[i].Polarity=="NEGATIVE") {
-        negCount++;
-      } else {
-        neutCount++;
-      }
-  }
-  setPositive(posCount);
-  setNegative(negCount);
-  setNeutral(neutCount);
-  setPolarity("Polarity: Positive: "+posCount+" Negative: "+negCount+" Neutral: "+neutCount);
-
-  });
-}
   async function currentUsrInfo() {
     try {
       const user = await Auth.currentAuthenticatedUser({
@@ -90,6 +49,10 @@ async function getPolarity(){
   const chatWithUsr = () => {
     histNavigate.push("/chat");
   };
+
+  const viewPolarity = () => {
+    histNavigate.push('/polarity')
+  }
 
   return (
     <Grid
@@ -133,7 +96,7 @@ async function getPolarity(){
 
       {currentUsrRole?.toLowerCase() !== "customer" && (
         <Grid item xs={6} className="grid-item">
-          <div className="card-item" onClick={() => getPolarity()}>
+          <div className="card-item" onClick={() => viewPolarity()}>
             <Card className="card" variant="outlined">
               Review Polarity
             </Card>
@@ -147,22 +110,6 @@ async function getPolarity(){
             Chat
           </Card>
         </div>
-      </Grid>
-
-      <Grid item xs={12} className="grid-item">
-      { polarity &&
-        <Plot
-        data={[
-          {
-            x: ["Positive", "Neutral", "Negative"],
-            y: [positive, neutral, negative],
-            type: 'scatter',
-            mode: 'lines',
-          },
-          {type: 'bar', x: ["Positive", "Neutral", "Negative"], y: [positive, neutral,negative]},
-        ]}
-        layout={ {width: 400, height: 300, title: 'Reveiws Polarity Plot'} }
-      />}
       </Grid>
     </Grid>
   );

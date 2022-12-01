@@ -15,6 +15,7 @@ import "../src/main.css";
 import './App.scss';
 import MultiFactor from "./components/mfa/MultiFactorAuth";
 import Visualization from "./components/visualization/Visualization";
+import PolarityComponent from "./components/polarity/PolarityComponent";
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
                 <Route exact path="/fetchFood" component={Order} />
                 <Route exact path="/ownerRecipeUpload" component={RecipeUploadComp} />
                 <Route exact path="/visualize" component={Visualization} />
+                <Route exact path="/polarity" component={PolarityComponent} />
             </Switch>
             :
             <Switch>
