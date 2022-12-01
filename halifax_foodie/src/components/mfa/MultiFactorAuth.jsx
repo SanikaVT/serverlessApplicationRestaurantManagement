@@ -7,14 +7,14 @@ import firebase from "firebase/app";
 
 export default function MultiFactor() {
   const histNavigate = useHistory();
-//https://reactjs.org/docs/hooks-state.html
+  //https://reactjs.org/docs/hooks-state.html
   const [secondFacAns, setSecondFacAns] = useState("");
   const [thirdFacKey, setThirdFacKey] = useState("");
   const [thirdFacText, setThirdFacText] = useState("");
   const secondFactorQuestion = "What is Your favorite color?";
   const [currentUsrRole, setCurrentUsrRole] = useState("customer");
   const [ques, setQues] = useState();
-  const [verified, setVerified]=useState();
+  const [verified, setVerified] = useState();
   const [generatedCipher, setGeneratedCipher] = useState("");
   var firebaseUsr;
   useEffect(async () => {
@@ -31,7 +31,9 @@ export default function MultiFactor() {
       }));
     const currUSr = JSON.parse(localStorage.getItem("currentLocalUser"));
     const firebaseUsers = await db.collection("users");
-    const userInfo = await firebaseUsers.where("username", "==", currUSr.username).get();
+    const userInfo = await firebaseUsers
+      .where("username", "==", currUSr.username)
+      .get();
 
     userInfo.forEach((doc) => {
       firebaseUsr = doc.data();
@@ -45,27 +47,26 @@ export default function MultiFactor() {
   }, []);
 
   const generateCipherText = async () => {
-    
-  var currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
-//sign-up third factor
-var body = {
-  email: currentUsr.email,
-  userName: currentUsr.username,
-  role: currentUsrRole,
-  key: thirdFacKey,
-  plainText: thirdFacText,
-};
+    var currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
 
-//Reference: https://axios-http.com/docs/post_example
-try {
-  let response = await axios.post(
-    "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addcipher",
+    //sign-up third factor
+    var body = {
+      email: currentUsr.email,
+      userName: currentUsr.username,
+      role: currentUsrRole,
+      key: thirdFacKey,
+      plainText: thirdFacText,
+    };
+    //Reference: https://axios-http.com/docs/post_example
+    try {
+      let response = await axios.post(
+        "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addcipher",
 
-    JSON.stringify(body),
-    { headers: { "Content-Type": "application/json" } }
-  );
-  setGeneratedCipher(response.data.body)
-} catch (err) {}
+        JSON.stringify(body),
+        { headers: { "Content-Type": "application/json" } }
+      );
+      setGeneratedCipher(response.data.body);
+    } catch (err) {}
   };
 
   // On submit, perform 2nd and 3rd factor authentication, first check 2nd factor auth and if the answer is invalid, show invalid answer otherwise perform third factor auth
@@ -76,7 +77,9 @@ try {
       firebaseUsr = {};
 
       const firebaseUsers = await db.collection("users");
-      const usrInfo = await firebaseUsers.where("username", "==", currentUsr.username).get();
+      const usrInfo = await firebaseUsers
+        .where("username", "==", currentUsr.username)
+        .get();
 
       usrInfo.forEach((doc) => {
         firebaseUsr = doc.data();
@@ -90,12 +93,10 @@ try {
             .doc(firebaseUsr.email)
             .update({
               loginCount: firebaseUsr.loginCount || 0 + 1,
-              lastAuthTime: firebase.firestore.FieldValue.serverTimestamp()
+              lastAuthTime: firebase.firestore.FieldValue.serverTimestamp(),
             })
-            .then((doc) => {
-            })
-            .catch((err) => {
-            });
+            .then((doc) => {})
+            .catch((err) => {});
         } else {
           alert("Please Enter a valid answer");
         }
@@ -106,8 +107,7 @@ try {
         cipher: generatedCipher,
         username: currentUsr.username,
       };
-      console.log(body);
-    //Reference: https://axios-http.com/docs/post_example
+      //Reference: https://axios-http.com/docs/post_example
 
       await axios
         .post(
@@ -116,28 +116,23 @@ try {
 
           {
             headers: {
-         
               "Content-Type": "application/json",
             },
           }
         )
         .then((response) => {
-          response=JSON.parse(response.data.body);
-          var message= response[0].message;
-          if(message=="User Not Verified")
-          {
-           alert(message); 
-           localStorage.setItem("isVerifiedQues", false);
+          response = JSON.parse(response.data.body);
+          var message = response[0].message;
+          if (message === "User Not Verified") {
+            alert(message);
+            localStorage.setItem("isVerifiedQues", false);
+          } else {
+            setVerified(verified);
+            histNavigate.push("/");
+            window.location.reload();
           }
-          else{
-          setVerified(verified)
-          histNavigate.push("/");
-          window.location.reload();
-          }
-          
         })
-        .catch((err) => {
-        });
+        .catch((err) => {});
     } else {
       var currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
 
@@ -151,7 +146,6 @@ try {
         loginCount: 0,
         lastAuthTime: firebase.firestore.FieldValue.serverTimestamp(),
       };
-      console.log(firebase_body);
       await axios
         .post(
           "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addtofirebase",
@@ -164,9 +158,7 @@ try {
           histNavigate.push("/");
           window.location.reload();
         })
-        .catch((err) => {
-        });
-      
+        .catch((err) => {});
     }
   };
 
@@ -190,7 +182,9 @@ try {
                         className="input-design top-space form-control"
                         type="text"
                         value={currentUsrRole}
-                        onChange={(e) => setCurrentUsrRole(e.target.value.toLowerCase())}
+                        onChange={(e) =>
+                          setCurrentUsrRole(e.target.value.toLowerCase())
+                        }
                         placeholder="Customer"
                       />
                     </div>
@@ -260,7 +254,9 @@ try {
                       />
                     </div>
                     <div className="mb-3"></div>
-                    <button onClick={generateCipherText}>Generate Cipher</button>
+                    <button onClick={generateCipherText}>
+                      Generate Cipher
+                    </button>
                     <div className="mb-2"></div>
                     <span>{generatedCipher}</span>
                   </div>
@@ -268,7 +264,9 @@ try {
               </div>
 
               <div className="cus-form form-top-space">
-                <button className="btn btn-primary" type="submit">Submit</button>
+                <button className="btn btn-primary" type="submit">
+                  Submit
+                </button>
               </div>
             </form>
           </div>

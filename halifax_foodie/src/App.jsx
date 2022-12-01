@@ -15,6 +15,7 @@ import "../src/main.css";
 import './App.scss';
 import MultiFactor from "./components/mfa/MultiFactorAuth";
 import Visualization from "./components/visualization/Visualization";
+import PolarityComponent from "./components/polarity/PolarityComponent";
 
 function App() {
 
@@ -41,6 +42,8 @@ function App() {
           </AppBar>
           {
             isVerified ?
+            // references
+            // https://v5.reactrouter.com/web/guides/quick-start
             <Switch>
                 <Route exact path="/" component={DashboardComp} />
                 <Route exact path="/question" component={MultiFactor} />
@@ -49,6 +52,7 @@ function App() {
                 <Route exact path="/fetchFood" component={Order} />
                 <Route exact path="/ownerRecipeUpload" component={RecipeUploadComp} />
                 <Route exact path="/visualize" component={Visualization} />
+                <Route exact path="/polarity" component={PolarityComponent} />
             </Switch>
             :
             <Switch>

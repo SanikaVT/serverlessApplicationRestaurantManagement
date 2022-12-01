@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, ListGroup, Row, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router";
-import "./OrderFood.css";
+import "./OrderFood.scss";
 
 
 export class OrderFoodComp extends Component {
@@ -13,7 +13,7 @@ export class OrderFoodComp extends Component {
       heading: "",
       title: "",
       ingredient: "",
-      listFood: [],  
+      isLoading: true
     };
   }
   //Fetches food from dynamodb
@@ -34,9 +34,9 @@ export class OrderFoodComp extends Component {
         this.setState({
           listFood: result[0].food,
         });
-      });
-      
-      
+      }).catch(error => {
+        this.setState({isLoading: false})
+      })
   }
   //Code to order an item from the given list
   async placeOrder(row) {
@@ -64,67 +64,78 @@ export class OrderFoodComp extends Component {
   async exportRecipe(row) {
     this.setState({
       heading: "Extracted Title and Key Ingredients",
-      title: "Title:" + row.foodName,
-      ingredient: "Ingredients:" + row.ingredient,
+      title: row.foodName,
+      ingredient: row.ingredient,
     });
   }
 
   render() {
     return (
-      <Container>
+        // {/* references */}
+        // {/* https://mui.com/material-ui/react-grid/ */}
         <Row className="to-do-list-items">
-          <Col md={12} lg={5}>
-            <div>
-              <h3>Order Your Food</h3>
-              {this.state.listFood.map((row) => (
-                <Card className="card-content-incomplete">
-                  <Row className="card-item">
-                    <Col xs={5} md={6} className="card-item-content">
+          <Col md={10} lg={5} className="items-container">
+            <Card className="item-card">
+              <Card.Header style={{ fontWeidht: "bold" }}>
+                Order Your Food
+              </Card.Header>
+              <Card.Body>
+                {
+                  this.state.isLoading &&
+                  <div className="d-flex h-100 justify-content-center align-items-center">
+                    <Spinner animation="border" variant="primary" />
+                  </div>
+                } {
+                  !this.state.isLoading &&
+                  this.state.food.map((row) => (
+                    <Card className="card-content-incomplete">
                       <Card.Body>
-                        <Card.Title>Food: {row.foodName}</Card.Title>
-                        <Card.Title>Price: ${row.price}</Card.Title>
+                        <ListGroup className="list-group-flush" style={{marginBottom: '1rem'}}>
+                          <ListGroup.Item>
+                            <strong>Food: </strong>
+                            <span>{row.foodName}</span>
+                          </ListGroup.Item>
+                          <ListGroup.Item>
+                            <strong>Price:  </strong>
+                            <span>${row.price}</span>
+                          </ListGroup.Item>
+                        </ListGroup>
+                        <Button style={{marginRight: '1rem'}} className="add-button" onClick={() => this.orderitem(row)}>
+                          Place Order
+                        </Button>
+                        <Button onClick={() => this.exportRecipe(row)}>
+                          Extract ingredients
+                        </Button>
                       </Card.Body>
-                    </Col>
-                    <Col xs={3} md={5} className="card-item-content">
-                      
-                      <Button onClick={() => this.exportRecipe(row)}>
-                        Extract ingredients
-                      </Button>
-                      <div></div>
-                    <Col xs={3} md={5} className="card-item-content"><Button
-                        className="add-button"
-                        onClick={() => this.placeOrder(row)}
-                      >
-                        Place Order
-                      </Button></Col>
-                      
-                    </Col>
-                  </Row>
-                </Card>
-              ))}
-            </div>
+                    </Card>
+                  ))
+                }
+              </Card.Body>
+            </Card>
           </Col>
-          <Col>
-            <div>
-              <Row>
-                <Col md={12} lg={6} >
-                  <Card.Body>
-                  <h4>{this.state.heading}</h4>
-                    <Card.Title>{this.state.title}</Card.Title>
-                    <div></div>
-                    <Card.Title>{this.state.ingredient}</Card.Title>
-                    <div></div>
-                    <div></div>
-                  </Card.Body>
-                  <div></div>
-                  
-                </Col>
-              </Row>
-            </div>
+        {
+          this.state.heading &&
+          <Col md={10} lg={5}>
+            {/* references */}
+            {/* https://mui.com/material-ui/react-card/ */}
+            <Card>
+              <Card.Header>{this.state.heading}</Card.Header>
+              <Card.Body>
+                <ListGroup className="list-group-flush" style={{marginBottom: '1rem'}}>
+                  <ListGroup.Item>
+                    <strong>Title:  </strong>
+                    <span>{this.state.title}</span>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <strong>Ingredients:  </strong>
+                    <span>{this.state.ingredient}</span>
+                  </ListGroup.Item>
+                </ListGroup>
+              </Card.Body>
+            </Card>
           </Col>
+        }
         </Row>
-        <Row></Row>
-      </Container>
     );
   }
 }
