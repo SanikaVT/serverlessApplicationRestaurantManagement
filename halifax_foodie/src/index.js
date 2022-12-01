@@ -24,9 +24,7 @@ ReactDOM.render(
       region="us-east-1"
       headerText="HalifaxFoodie Bot"
       headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
-      greeting={
-        "Hello, how can I help? You can say things like 'help' to get more info"
-      }
+      greeting={"Hello, how can I help you?"}
     />
   </React.StrictMode>,
   document.getElementById("root")

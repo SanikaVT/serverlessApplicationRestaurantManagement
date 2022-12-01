@@ -4,6 +4,9 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase/app';
 import ChatMessage from './ChatMessage'
 import { Button, OutlinedInput } from '@mui/material';
+import axios from "axios";
+import { NavLink } from 'react-router-dom';
+
 
 export default function ChatRoom({currentUser, chatWith}) {
 
@@ -42,6 +45,21 @@ export default function ChatRoom({currentUser, chatWith}) {
 
     };
 
+    const updateCheck= async ()=>{
+        await axios
+    .post(
+      "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/updatecheck",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+        console.log(response)
+    }); 
+    };
+
     return (
         <>
         <main>
@@ -59,6 +77,10 @@ export default function ChatRoom({currentUser, chatWith}) {
 
                 <Button style={{marginLeft:'10px'}} type="submit" variant="contained" color="success" disabled={!formValue}>
                     Send
+                </Button>
+                <Button style={{marginLeft:'10px'}} variant="contained" color="success" onClick={updateCheck}>
+                    <NavLink style={{textDecoration: 'none', color: 'white', cursor: 'pointer'}} to={'/'}> Close</NavLink>
+    
                 </Button>
         </form>
         </>
