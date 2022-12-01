@@ -3,6 +3,7 @@ import { Auth } from "aws-amplify";
 import React, { useEffect, useState } from "react";
 import './Dashboard.scss';
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 //Dashboard contains all the buttons visualization, Uplaod Recipe, Order Food etc
 export default function DashboardComp() {
@@ -96,12 +97,38 @@ export default function DashboardComp() {
         <Grid item xs={6} className="grid-item">
           <div className="card-item" onClick={() => fetchFoodList()}>
             <Card className="card" variant="outlined">
-              Order Food
+              Subway
             </Card>
           </div>
         </Grid>
       )}
-
+{currentUsrRole?.toLowerCase() === "customer" && (
+        <Grid item xs={6} className="grid-item">
+          <div className="card-item" onClick={() => fetchFoodList()}>
+            <Card className="card" variant="outlined">
+              Tawa Grill
+            </Card>
+          </div>
+        </Grid>
+      )}{currentUsrRole?.toLowerCase() === "customer" && (
+        <Grid item xs={6} className="grid-item">
+          <div className="card-item" onClick={() => fetchFoodList()}>
+            <Card className="card" variant="outlined">
+              Pizza Pizza
+            </Card>
+          </div>
+        </Grid>
+      )}
+      {currentUsrRole?.toLowerCase() === "customer" && (
+        <Grid item xs={6} className="grid-item">
+          <div className="card-item" onClick={() => fetchFoodList()}>
+            <Card className="card" variant="outlined">
+              Burger Queen
+            </Card>
+          </div>
+        </Grid>
+      )}
+      
       {/* show visualization only to owner */}
       {
         currentUsrRole?.toLowerCase() !== "customer" &&
@@ -134,13 +161,13 @@ export default function DashboardComp() {
         </Grid>
       )}
 
-      <Grid item xs={6} className="grid-item">
+      {currentUsrRole?.toLowerCase() !== "customer" &&(<Grid item xs={6} className="grid-item">
         <div className="card-item" onClick={() => chatWithUsr()}>
           <Card className="card" variant="outlined">
             Chat
           </Card>
         </div>
-      </Grid>
+      </Grid>)}
     </Grid>
   );
 }
