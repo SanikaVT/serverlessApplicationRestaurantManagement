@@ -48,7 +48,6 @@ export class RateOrderComp extends Component {
   render() {
     return (
       <div className="row rating-content justify-content-center align-items-center h-50">
-
         <div className="col-md-4">
           <Card>
             <Card.Header>

@@ -13,6 +13,7 @@ export class OrderFoodComp extends Component {
       heading: "",
       title: "",
       ingredient: "",
+      listFood: [],
       isLoading: true
     };
   }
@@ -30,11 +31,12 @@ export class OrderFoodComp extends Component {
       )
       .then((response) => {
         var result = JSON.parse(response.data.body);
-        console.log(response)
         this.setState({
           listFood: result[0].food,
         });
-      }).catch(error => {
+      })
+      .catch(error => {})
+      .finally(() => {
         this.setState({isLoading: false})
       })
   }
@@ -87,7 +89,7 @@ export class OrderFoodComp extends Component {
                   </div>
                 } {
                   !this.state.isLoading &&
-                  this.state.food.map((row) => (
+                  this.state.listFood.map((row) => (
                     <Card className="card-content-incomplete">
                       <Card.Body>
                         <ListGroup className="list-group-flush" style={{marginBottom: '1rem'}}>
@@ -100,7 +102,7 @@ export class OrderFoodComp extends Component {
                             <span>${row.price}</span>
                           </ListGroup.Item>
                         </ListGroup>
-                        <Button style={{marginRight: '1rem'}} className="add-button" onClick={() => this.orderitem(row)}>
+                        <Button style={{marginRight: '1rem'}} className="add-button" onClick={() => this.placeOrder(row)}>
                           Place Order
                         </Button>
                         <Button onClick={() => this.exportRecipe(row)}>

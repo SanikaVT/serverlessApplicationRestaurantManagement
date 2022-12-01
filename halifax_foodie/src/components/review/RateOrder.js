@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Button, Row } from "react-bootstrap";
+import { Button, Card, Row } from "react-bootstrap";
 import { withRouter } from "react-router";
 export class RateOrderComp extends Component {
   constructor(props) {
@@ -46,27 +46,32 @@ export class RateOrderComp extends Component {
   };
   render() {
     return (
-      <Row className="rating-content">
-        <div>
-          <h2>Rate your Order</h2>
-        </div>
-        <div>
+
+      <div className="row rating-content justify-content-center align-items-center h-50">
+      <div className="col-md-4">
+        <Card>
+          <Card.Header>
+            Rate your Order
+          </Card.Header>
+          <Card.Body>
           <input
+            className="form-control"
+            placeholder="Type your review ..."
             type="text"
             name="review"
             value={this.state.review}
             onChange={this.onValueChange}
           />
-        </div>
-        <div className="add-button">
-          <Button className="primary-button" onClick={this.submitReview}>
+            <Button className="btn primary-button" onClick={this.submitReview}>
             Submit
           </Button>
-          <Button className="primary-button" onClick={this.cancelItem}>
+          <Button className="btn primary-button" onClick={this.cancelItem}>
             Cancel
           </Button>
-        </div>
-      </Row>
+          </Card.Body>
+        </Card>
+      </div>
+    </div>
     );
   }
 }

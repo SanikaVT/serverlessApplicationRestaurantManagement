@@ -254,7 +254,7 @@ export default function MultiFactor() {
                       />
                     </div>
                     <div className="mb-3"></div>
-                    <button onClick={generateCipherText}>
+                    <button className="btn btn-success" onClick={generateCipherText}>
                       Generate Cipher
                     </button>
                     <div className="mb-2"></div>
