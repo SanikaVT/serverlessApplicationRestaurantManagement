@@ -15,6 +15,36 @@ export default function DashboardComp() {
     currentUsrInfo();
   }, []);
 
+  /*DO NOT REMOVE THIS COMMENTED CODE*/
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     getCheck();
+  //   }, 10000);
+  //   return () => clearInterval(interval);
+  // },[]);
+
+
+
+  async function getCheck() {
+    await axios
+    .post(
+      "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/getcheck",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      var flag=JSON.parse(response.data.body)
+      console.log(flag)
+      if(flag=="true")
+      {
+        histNavigate.push("/chat");
+      }
+    });    
+  }
   async function currentUsrInfo() {
     try {
       const user = await Auth.currentAuthenticatedUser({
