@@ -1,7 +1,8 @@
+# References: 
+# https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-uploading-files.html
+
 import json
 import boto3
-import random
-import re
 def lambda_handler(event, context):
     if (event):
         print(event)
