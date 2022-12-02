@@ -19,10 +19,12 @@ export default function DashboardComp() {
   /*DO NOT REMOVE THIS COMMENTED CODE*/
 
   // useEffect(() => {
+  //   if(currentUsrRole!="owner"){
   //   const interval = setInterval(() => {
   //     getCheck();
   //   }, 10000);
   //   return () => clearInterval(interval);
+  // }
   // },[]);
 
   async function getCheck() {

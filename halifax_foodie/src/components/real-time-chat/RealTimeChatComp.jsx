@@ -14,7 +14,6 @@ export default function RealTimeChatComp({sentBy}) {
     const [currentUser, setCurrentUser] = useState(null)
     const [customerList, setCustomerList] = useState([])
     const [selectedCustomer, setSelectedCustomer] = useState(null)
-    // const navigate = useNavigate()
     const history = useHistory();
 
     useEffect(() => {
@@ -31,7 +30,7 @@ export default function RealTimeChatComp({sentBy}) {
 
         if(currentUser?.role?.toLowerCase() !== 'customer') {
             const users = await db.collection("users");
-            const userData = await users.where("userRole", "==", 'customer').get();
+            const userData = await users.where("role", "==", 'customer').get();
 
             const customerData = []
             userData.forEach((doc) => {
@@ -48,6 +47,10 @@ export default function RealTimeChatComp({sentBy}) {
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         {props.customer.email}
                     </Typography>
+                    {
+                        props.customer.hasComplaint &&
+                        <p className="text-danger">Complaint raised</p>
+                    }
                 </CardContent>
             </Card>
         )
@@ -78,7 +81,7 @@ export default function RealTimeChatComp({sentBy}) {
                     props.customerList
                     && !props.customerList.length
                     &&
-                    <h1 style={{color: 'white', padding: '1rem'}}>
+                    <h1 style={{ padding: '1rem'}}>
                         No Customers !!!
                     </h1>
                 }

@@ -20,11 +20,11 @@ ReactDOM.render(
         botName="myBot"
         IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
         placeholder="Placeholder text"
-        backgroundColor="#FFFFFF"
-        height={430}
+        backgroundColor="white"
+        height={450}
         region="us-east-1"
-        headerText="HalifaxFoodie Bot"
-        headerStyle={{ backgroundColor: "#ABD5D9", fontSize: "30px" }}
+        headerText="HalifaxFoodie Help"
+        headerStyle={{ backgroundColor: "#873e23", fontSize: "40px" }}
         greeting={"Hello, how can I help you?"}
       />
     ) : (

@@ -65,9 +65,16 @@ export default function ChatRoom({currentUser, chatWith}) {
         console.log(response)
         localStorage.setItem("isChat","false");
         window.location.reload();
-
-
     }); 
+
+    db.collection("users")
+            .doc(currentUser.email)
+            .update({
+              hasComplaint: false,
+            })
+            .then((doc) => {})
+            .catch((err) => {});
+
     };
 
     return (
