@@ -18,7 +18,7 @@ def lambda_handler(event, context):
         )
     uInfo = myTable['Items']
     return verifyUser
-    
+#verify user code
 def verifyUser(uInfo, uname, cipherText):
     for item in uInfo:
         if item['userID']== uname:

@@ -4,11 +4,14 @@ import { Button, Card, Col, ListGroup, Row, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router";
 import "./OrderFood.scss";
 
-
+// It contains all food items for restaurant and an option to order food
 export class OrderFoodComp extends Component {
+    //Reference: https://www.robinwieruch.de/local-storage-react/
+    //Reference: https://www.digitalocean.com/community/tutorials/react-constructors-with-react-components
   constructor(props) {
     super(props);
     this.state = {
+        //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
       currUsr: JSON.parse(localStorage.getItem("currentLocalUser")),
       heading: "",
       title: "",
@@ -30,6 +33,7 @@ export class OrderFoodComp extends Component {
         }
       )
       .then((response) => {
+          //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
         var result = JSON.parse(response.data.body);
         this.setState({
           listFood: result[0].food,
@@ -50,13 +54,15 @@ export class OrderFoodComp extends Component {
       userName: this.state.currUsr.email,
     };
     try {
-        //Reference: https://axios-http.com/docs/post_example
+      //Reference: https://axios-http.com/docs/post_example
       await axios.post(
         "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addorder",
         JSON.stringify(body),
         { headers: { "Content-Type": "application/json" } }
       );
+      //Reference: https://stackoverflow.com/questions/53090699/how-to-run-an-alert-on-button-click-react-js
       alert(body.userName+" ordered " + row["foodName"]);
+      //Reference: https://www.digitalocean.com/community/tutorials/react-constructors-with-react-components
       this.props.history.push("/postReview", { foodId: body.foodId });
     } catch (err) {
     }
@@ -75,6 +81,7 @@ export class OrderFoodComp extends Component {
     return (
         // {/* references */}
         // {/* https://mui.com/material-ui/react-grid/ */}
+            //Reference: https://react-bootstrap.github.io/components/cards/
         <Row className="to-do-list-items">
           <Col md={10} lg={5} className="items-container">
             <Card className="item-card">
@@ -123,6 +130,7 @@ export class OrderFoodComp extends Component {
             <Card>
               <Card.Header>{this.state.heading}</Card.Header>
               <Card.Body>
+                {/* Reference: https://getbootstrap.com/docs/4.0/components/list-group/*/}
                 <ListGroup className="list-group-flush" style={{marginBottom: '1rem'}}>
                   <ListGroup.Item>
                     <strong>Title:  </strong>
@@ -141,5 +149,5 @@ export class OrderFoodComp extends Component {
     );
   }
 }
-
+//Reference: https://www.oreilly.com/library/view/javascript-by-example/9781788293969/58acd049-c14d-443f-9aa5-9c625de32331.xhtml
 export default withRouter(OrderFoodComp);

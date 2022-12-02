@@ -11,23 +11,28 @@ import './RealTimeChat.scss';
 import { Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 
 export default function RealTimeChatComp({sentBy}) {
+      //Reference: https://reactjs.org/docs/hooks-state.html
     const [currentUser, setCurrentUser] = useState(null)
     const [customerList, setCustomerList] = useState([])
     const [selectedCustomer, setSelectedCustomer] = useState(null)
     const history = useHistory();
-
+   //Reference: https://reactjs.org/docs/hooks-effect.html
     useEffect(() => {
         getCurrentUser()
     }, [])
 
     async function getCurrentUser() {
+          //Reference: https://www.robinwieruch.de/local-storage-react/
         let localStorageCurrentUser = localStorage.getItem('currentUser')
         if(!localStorageCurrentUser || localStorageCurrentUser === 'null') {
             history.push('/')
             return
         }
+          //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
         setCurrentUser(JSON.parse(localStorageCurrentUser));
-
+    //Reference: https://dev.to/gautemeekolsen/til-firestore-get-collection-with-async-await-a5l
+    //Reference: https://firebase.google.com/docs/firestore/manage-data/add-data
+    //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
         if(currentUser?.role?.toLowerCase() !== 'customer') {
             const users = await db.collection("users");
             const userData = await users.where("role", "==", 'customer').get();
@@ -42,6 +47,8 @@ export default function RealTimeChatComp({sentBy}) {
 
     function SingleCustomer(props) {
         return (
+            //Reference: https://react-bootstrap.github.io/components/cards/
+            //Reference: https://www.digitalocean.com/community/tutorials/react-constructors-with-react-components
             <Card style={{marginBottom: '1rem', cursor: 'pointer'}}>
                 <CardContent>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -66,6 +73,7 @@ export default function RealTimeChatComp({sentBy}) {
 
     function CustomersList(props) {
         return (
+            //Reference: https://www.digitalocean.com/community/tutorials/react-constructors-with-react-components
             <div className="customers-list">
                 {
                     props.customerList
@@ -90,6 +98,8 @@ export default function RealTimeChatComp({sentBy}) {
     }
 
     return (
+        //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+        //Reference: https://react-bootstrap.github.io/layout/grid/
         <Grid container spacing={2} justifyContent="center" alignItems="center" height={'100%'} marginTop={2}>
             <Grid item={true} xs={2} sm={4} md={4}  className="chat-container">
                 <Card variant="outlined" style={{marginBottom: '25px'}}>
@@ -102,7 +112,7 @@ export default function RealTimeChatComp({sentBy}) {
                         {
                             currentUser && currentUser?.role?.toLowerCase() !== 'customer' && selectedCustomer && <ChatRoom currentUser={currentUser} chatWith={selectedCustomer} />
                         }
-
+                        {/* https://reactjs.org/docs/components-and-props.html */}
                         {
                             currentUser && currentUser?.role?.toLowerCase() !== 'customer' && !selectedCustomer && <CustomersList customerList={customerList}/>
                         }

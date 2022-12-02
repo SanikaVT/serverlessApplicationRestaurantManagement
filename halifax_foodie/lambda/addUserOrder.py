@@ -19,7 +19,7 @@ def lambda_handler(event, context):
         orderTable = dyndb.Table("userOrder")
         return addToDynamo(body,orderTable,foodNm,ranInt,uname,cost,ingred);
         
-
+#add user order to dynamo
 def addToDynamo(body,orderTable,foodNm,ranInt,uname,cost,ingred):
   if(len(body)!=0):
             orderTable.put_item(

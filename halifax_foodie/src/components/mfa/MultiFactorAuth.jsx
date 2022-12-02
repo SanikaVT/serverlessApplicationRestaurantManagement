@@ -7,7 +7,7 @@ import firebase from "firebase/app";
 
 export default function MultiFactor() {
   const histNavigate = useHistory();
-  //https://reactjs.org/docs/hooks-state.html
+  //Reference: https://reactjs.org/docs/hooks-state.html
   const [secondFacAns, setSecondFacAns] = useState("");
   const [thirdFacKey, setThirdFacKey] = useState("");
   const [thirdFacText, setThirdFacText] = useState("");
@@ -20,16 +20,24 @@ export default function MultiFactor() {
   useEffect(async () => {
     let firebaseUsr;
     //Checking if the user is a registered user
+    //Reference: https://docs.amplify.aws/lib/auth/manageusers/q/platform/js/
+      //Reference: https://www.robinwieruch.de/local-storage-react/
+  //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
+
     !JSON.parse(localStorage.getItem("isVerifiedQues")) &&
       (await Auth.currentUserPoolUser().then((obj) => {
         const regUser = {
           username: obj.username,
           email: obj.attributes.email,
         };
+        //Reference: https://www.robinwieruch.de/local-storage-react/
         localStorage.setItem("currentLocalUser", JSON.stringify(regUser));
         localStorage.setItem("isVerifiedQues", false);
       }));
+      //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
     const currUSr = JSON.parse(localStorage.getItem("currentLocalUser"));
+    //Reference: https://dev.to/gautemeekolsen/til-firestore-get-collection-with-async-await-a5l
+    //Reference: https://firebase.google.com/docs/firestore/manage-data/add-data
     const firebaseUsers = await db.collection("users");
     const userInfo = await firebaseUsers
       .where("username", "==", currUSr.username)
@@ -73,6 +81,7 @@ export default function MultiFactor() {
   const onSubmitForm = async (e) => {
     e.preventDefault();
     if (ques) {
+        //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
       const currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
       firebaseUsr = {};
 
@@ -86,9 +95,12 @@ export default function MultiFactor() {
       });
       if (firebaseUsr.securityAnswer) {
         if (secondFacAns === firebaseUsr?.securityAnswer) {
+          //Reference: https://www.robinwieruch.de/local-storage-react/
           localStorage.setItem("isVerifiedQues", true);
           localStorage.setItem("userRole", firebaseUsr.role);
           console.log(firebaseUsr.loginCount);
+          //Reference: https://dev.to/gautemeekolsen/til-firestore-get-collection-with-async-await-a5l
+          //Reference: https://firebase.google.com/docs/firestore/manage-data/add-data
           db.collection("users")
             .doc(firebaseUsr.email)
             .update({
@@ -98,11 +110,12 @@ export default function MultiFactor() {
             .then((doc) => {})
             .catch((err) => {});
         } else {
+          //Reference: https://stackoverflow.com/questions/53090699/how-to-run-an-alert-on-button-click-react-js
           alert("Please Enter a valid answer");
         }
       }
 
-      //login 3rd factor
+      //login 3rd factor api call
       var body = {
         cipher: generatedCipher,
         username: currentUsr.username,
@@ -121,14 +134,17 @@ export default function MultiFactor() {
           }
         )
         .then((response) => {
+          //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
           response = JSON.parse(response.data.body);
           var message = response[0].message;
           if (message === "User Not Verified") {
+            //Reference: https://stackoverflow.com/questions/53090699/how-to-run-an-alert-on-button-click-react-js
             alert(message);
             localStorage.setItem("isVerifiedQues", false);
           } else {
             setVerified(verified);
             histNavigate.push("/");
+            //Reference: https://www.w3schools.com/jsref/met_loc_reload.asp#:~:text=Window%20location.reload()&text=The%20reload()%20method%20reloads,reload%20button%20in%20your%20browser.
             window.location.reload();
           }
         })
@@ -136,7 +152,7 @@ export default function MultiFactor() {
     } else {
       var currentUsr = JSON.parse(localStorage.getItem("currentLocalUser"));
 
-      //signup 2nd factor
+      //SignUp 2nd factor code
       const firebase_body = {
         email: currentUsr.email,
         securityQuestion: secondFactorQuestion,
@@ -146,6 +162,7 @@ export default function MultiFactor() {
         loginCount: 0,
         lastAuthTime: firebase.firestore.FieldValue.serverTimestamp(),
       };
+      //Reference: https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/
       await axios
         .post(
           "https://vvzh0tcvl0.execute-api.us-east-1.amazonaws.com/default/addtofirebase",
@@ -153,9 +170,11 @@ export default function MultiFactor() {
           { headers: { "Content-Type": "application/json" } }
         )
         .then((response) => {
+          //Reference: https://www.robinwieruch.de/local-storage-react/
           localStorage.setItem("isVerifiedQues", true);
           localStorage.setItem("userRole", currentUsrRole);
           histNavigate.push("/");
+          //Reference: https://www.w3schools.com/jsref/met_loc_reload.asp#:~:text=Window%20location.reload()&text=The%20reload()%20method%20reloads,reload%20button%20in%20your%20browser.
           window.location.reload();
         })
         .catch((err) => {});
@@ -167,6 +186,9 @@ export default function MultiFactor() {
       <div className="col-md-6">
         <div className="card">
           <div className="card-body">
+          {/* Reference: https://reactjs.org/docs/forms.html */}
+          {/* //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator */}
+
             <form onSubmit={(e) => onSubmitForm(e)}>
               <div className="mb-5">
                 {ques ? (
@@ -178,6 +200,7 @@ export default function MultiFactor() {
                     </div>
                     <div>
                       <span>Please Enter user role</span>
+                      {/* Reference: https://reactjs.org/docs/uncontrolled-components.html */}
                       <input
                         className="input-design top-space form-control"
                         type="text"
@@ -202,6 +225,7 @@ export default function MultiFactor() {
 
                 <div className="cus-form form-top-space">
                   <span>{secondFactorQuestion}</span>
+                  {/* Reference: https://reactjs.org/docs/uncontrolled-components.html */}
                   <input
                     className="input-design top-space form-control"
                     type="text"

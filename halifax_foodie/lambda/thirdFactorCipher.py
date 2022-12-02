@@ -7,7 +7,7 @@ import math
 import boto3
 
 dynamodb = boto3.resource('dynamodb')
-
+# cipher generated for signup
 def generateCipher(inputKey,plaintxt):
     ciphText = ""
     ind = 0
@@ -33,7 +33,7 @@ def lambda_handler(event, context):
     evnt = event
     generatedCipher = generateCipher(evnt['key'],evnt['plainText'])
     return addToDynaAndReturnCipher(userTable,evnt,generatedCipher)
-
+#add cipher to dynamo
 def addToDynaAndReturnCipher(userTable,evnt,generatedCipher):
     userTable.put_item(Item=
     {

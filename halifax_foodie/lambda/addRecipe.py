@@ -3,6 +3,7 @@
 
 import json
 import boto3
+# Add file to s3
 def lambda_handler(event, context):
     if (event):
         print(event)

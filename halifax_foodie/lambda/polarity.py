@@ -17,7 +17,7 @@ def lambda_handler(event, context):
     else:
         resultResponse = checkPolarity(rateTable,polarityCheck)
     return resultResponse
-
+#check polarity
 def checkPolarity(rateTable,polarityCheck):
     comprehend = boto3.client("comprehend")
     for i in range(rateTable['Count']):            

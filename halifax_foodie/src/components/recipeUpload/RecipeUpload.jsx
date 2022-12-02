@@ -3,8 +3,9 @@ import React, { useRef, useState } from "react";
 import db from "../../firebase";
 import firebase from "firebase/app";
 import { Card } from "react-bootstrap";
-
+//This code is used to uplaod a recipe file
 function RecipeUploadComp() {
+    //Reference: https://reactjs.org/docs/hooks-state.html
   const [uploadedFileName, setUploadedFileName] = useState();
   const [fileContent, setFileContent] = useState("");
   const [title, setTitle] = useState("");
@@ -13,10 +14,12 @@ function RecipeUploadComp() {
   const [displaySimilarRecipe, setDisplaySimilarRecipe] = useState("");
 
   const ipRef = useRef();
+  //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
 
   const handleUpload = () => {
     ipRef.current?.click();
   };
+  // {/* Reference: https://reactjs.org/docs/forms.html */}
 
   const handleSubmit = async () => {
     const body = {
@@ -62,6 +65,7 @@ function RecipeUploadComp() {
           },
         }
       );
+        //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
       result = JSON.parse(result.data.body);
       setTitle(result[0].title);
       setIngredients(result[0].ingredients.toString());
@@ -71,7 +75,9 @@ function RecipeUploadComp() {
         ingredients: ingredients,
         createdTime: new Date().toLocaleString(),
       };
-
+      
+    //Reference: https://dev.to/gautemeekolsen/til-firestore-get-collection-with-async-await-a5l
+    //Reference: https://firebase.google.com/docs/firestore/manage-data/add-data
       db.collection("recipes")
         .add(recipe)
         .then((doc) => {})
@@ -94,6 +100,8 @@ function RecipeUploadComp() {
   return (
     <div className="row m-3 justify-content-center">
       <div className="col-md-4">
+        {/* Reference: https://react-bootstrap.github.io/components/cards/ */}
+        {/* Reference: https://reactjs.org/docs/uncontrolled-components.html */}
         <Card>
           <Card.Header>Upload a new recipe:</Card.Header>
           <Card.Body className="d-flex justify-content-center">
@@ -104,6 +112,8 @@ function RecipeUploadComp() {
                 className="d-none"
                 type="file"
               />
+              {/* Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator */}
+
               <button
                 onClick={handleUpload}
                 className={`w-100 btn btn-outline-${
@@ -120,7 +130,7 @@ function RecipeUploadComp() {
                   </b>
                 </span>
               </div>
-
+          {/* Reference: https://reactjs.org/docs/forms.html */}
               <div className="d-flex flex-column align-items-center">
                 <button className="btn btn-primary w-100 mb-3" onClick={handleSubmit}>
                   Submit

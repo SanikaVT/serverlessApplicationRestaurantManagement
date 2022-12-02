@@ -22,7 +22,7 @@ def lambda_handler(event, context):
                 })
        
         return addToDynamo(dynamoDb,reviewAdd,randNum,uname)
-
+#add rating to dynamo
 def addToDynamo(dynamoDb,reviewAdd,randNum,uname):
   rateTable = dynamoDb.Table("ratings")
   if(len(reviewAdd)!=0):

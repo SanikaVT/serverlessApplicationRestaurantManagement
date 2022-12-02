@@ -12,6 +12,7 @@ def lambda_handler(event, context):
         fooditems = foodtablelist['Items']
         return returnFromDynamo(fooditems,listFood)
         
+# return food list from dynamo
 def returnFromDynamo(fooditems,listFood):
     for fitem in fooditems:
             id = fitem['foodId']

@@ -12,10 +12,15 @@ import LexChat from "react-lex";
 //https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components
 Amplify.configure(config);
 // Reference: https://www.npmjs.com/package/react-lex-plus
+//Reference: https://www.robinwieruch.de/local-storage-react/
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    {/* Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse */}
+    {/* Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator */}
+
     {JSON.parse(localStorage.getItem("isChat")) == false ? (
+      //Reference: https://www.npmjs.com/package/react-lex/v/1.0.0
       <LexChat
         botName="myBot"
         IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"

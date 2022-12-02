@@ -15,7 +15,7 @@ def lambda_handler(event, context):
         fid=data['foodId']
         reviewRate = dyndb.Table("ratings")
         return addToDyn(revAdd,reviewRate,ranInt,uname,revAdd,fid)
-
+# add reviews to dynamo
 def addToDyn(revAdd,reviewRate,ranInt,uname,fid):
   if(len(revAdd)!=0):
             reviewRate.put_item(

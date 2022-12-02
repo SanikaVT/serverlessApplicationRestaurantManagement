@@ -24,9 +24,10 @@ def lambda_handler(event, context):
                 data['username']=order['username']
                 data['message']='Issue regarding my order : '+str(order_id)
             else:
-                order_id = -1        
+                order_id = -1     
+        #Add flag to dynamo    
         table=db.Table("check")
-        res = table.update_item(
+        table.update_item(
         Key={
             'id': '1'
         },
@@ -35,20 +36,11 @@ def lambda_handler(event, context):
         ':r': 'true',
         }, ReturnValues="UPDATED_NEW"
         )
-        
+        #call cloud function to perform pub sub
         if order_id!=-1:
             response = url.request('POST','https://us-central1-group01-9791a.cloudfunctions.net/publishComplaints',
                         body=json.dumps(data),headers={'Content-Type':'application/json'},retries=False)
             
             return {"dialogAction":{"type":"Close","fulfillmentState": "Fulfilled","message": { "contentType": "PlainText", "content": "Complaint recorded successfully!"}}}
-            return {
-                'statusCode': 200,
-                'headers': {
-                            'Access-Control-Allow-Headers': 'Content-Type',
-                            'Access-Control-Allow-Origin': '*',
-                            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-                            },
-                'body': json.dumps('Hello from Lambda!')
-            }
         else:
             return {"dialogAction":{"type":"Close","fulfillmentState": "Failed","message": { "contentType": "PlainText", "content": "Order not found."}}}

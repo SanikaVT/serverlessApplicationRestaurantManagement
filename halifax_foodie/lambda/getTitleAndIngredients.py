@@ -13,7 +13,7 @@ from difflib import SequenceMatcher
 
 dyndb = boto3.resource('dynamodb')
 comprehend = boto3.client('comprehend')
-
+#get recipe name 
 def getRecipeName(entities):
     RecName = 'Recipe Title'
     for i in range(len(entities['Entities'])):
@@ -22,7 +22,7 @@ def getRecipeName(entities):
         else:
             continue
     return RecName
-        
+#extract ingredients   
 def getRecipeIngredients(keyPhrases):
     ingredientDictionary=[]
     startIndex=0
@@ -39,7 +39,7 @@ def getRecipeIngredients(keyPhrases):
             replaceVal = value1.replace('\\r\\n','')
             ingredientDictionary.append(replaceVal)
     return ingredientDictionary
-    
+#Insert data in dynamo
 def insertIntoTable(recName,ingreds,timeCreated):
     recipeTble = dyndb.Table('recipes')
     recipeTble.put_item(Item=
@@ -48,10 +48,10 @@ def insertIntoTable(recName,ingreds,timeCreated):
         'ingredients': ingreds,
         'createdTime':timeCreated
     })
-    
+#check similarity
 def similarCheck(oldRecipes,recipeNew):
     return SequenceMatcher(None, oldRecipes,recipeNew).ratio()>0.50
-    
+
 def lambda_handler(event, context):
     bucket = boto3.client('s3')
     bucket = 'ownrecipes'

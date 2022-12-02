@@ -24,9 +24,9 @@ function App() {
     localStorage.clear();
     window.location.reload();
   };
+  //Reference: https://www.robinwieruch.de/local-storage-react/
   localStorage.setItem("isChat","false");
-  // UserContext.setChat(false);
-
+  //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
   let isVerified = !!JSON.parse(localStorage.getItem("isVerifiedQues"))
 //https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components
 
@@ -44,6 +44,8 @@ function App() {
             </Toolbar>
           </AppBar>
           {
+           //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+
             isVerified ?
             // references
             // https://v5.reactrouter.com/web/guides/quick-start
@@ -68,5 +70,5 @@ function App() {
   );
 }
 // export default App;
-
+//Reference: https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/
 export default withAuthenticator(App);

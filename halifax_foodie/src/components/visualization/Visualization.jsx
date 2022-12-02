@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 
 import './Visualization.scss'
-
+//This component is used to visualize data
 export default function Visualization() {
+  //Reference: https://reactjs.org/docs/hooks-state.html
     const [key, setKey] = useState('login');
 
     return (
@@ -18,6 +19,7 @@ export default function Visualization() {
                     onSelect={(k) => setKey(k)}
                     fill
                 >
+                    {/* https://www.npmjs.com/package/react-iframe */}
                 <Tab eventKey="login" title="Login Visualization">
                     {
                         key === 'login' &&

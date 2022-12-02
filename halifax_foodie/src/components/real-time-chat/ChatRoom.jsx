@@ -12,17 +12,21 @@ import { NavLink } from 'react-router-dom';
 import { useEffect } from 'react';
 
 export default function ChatRoom({currentUser, chatWith}) {
-
+  //Reference: https://reactjs.org/docs/hooks-state.html
     const [formValue, setFormValue] = useState("");
     const sentBy = currentUser.role?.toLowerCase() === 'customer' ? currentUser.email : 'restaurant'
+    //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
     const sentTo = chatWith ? chatWith.email : 'restaurant'
-
+    //Reference: https://dev.to/gautemeekolsen/til-firestore-get-collection-with-async-await-a5l
+    //Reference: https://firebase.google.com/docs/firestore/manage-data/add-data
     const messagesRef = db.collection("messages");
     const query = messagesRef.where('sentBy', 'in', [sentBy, sentTo]).orderBy("createdAt").limit(25);
     const [messages] = useCollectionData(query, { idField: "id" });
 
-    const dummy = useRef();
+    const refDummy = useRef();
+    //Reference: https://reactjs.org/docs/hooks-effect.html
     useEffect(() => {
+    //Reference: https://www.robinwieruch.de/local-storage-react/
      localStorage.setItem("isChat","true");
     }, [])
     
@@ -44,7 +48,7 @@ export default function ChatRoom({currentUser, chatWith}) {
             });
 
             setFormValue("");
-            dummy.current.scrollIntoView({ behavior: "smooth" });
+            refDummy.current.scrollIntoView({ behavior: "smooth" });
         } catch (error) {
             console.log(error)
         }
@@ -63,10 +67,13 @@ export default function ChatRoom({currentUser, chatWith}) {
     )
     .then((response) => {
         console.log(response)
+          //Reference: https://www.robinwieruch.de/local-storage-react/
         localStorage.setItem("isChat","false");
+        //Reference: https://www.w3schools.com/jsref/met_loc_reload.asp#:~:text=Window%20location.reload()&text=The%20reload()%20method%20reloads,reload%20button%20in%20your%20browser.
         window.location.reload();
     }); 
-
+    //Reference: https://dev.to/gautemeekolsen/til-firestore-get-collection-with-async-await-a5l
+    //Reference: https://firebase.google.com/docs/firestore/manage-data/add-data
     db.collection("users")
             .doc(currentUser.email)
             .update({
@@ -83,8 +90,9 @@ export default function ChatRoom({currentUser, chatWith}) {
             {getFilteredMessages() &&
             getFilteredMessages().map((msg) => <ChatMessage key={msg.id} message={msg} currentUser={currentUser} />)}
 
-            <span ref={dummy}></span>
+            <span ref={refDummy}></span>
         </main>
+          {/* Reference: https://reactjs.org/docs/forms.html */}
 
         <form onSubmit={sendMessage} className="message-form">
             <OutlinedInput

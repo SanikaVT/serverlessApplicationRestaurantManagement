@@ -3,7 +3,7 @@
 
 from google.cloud import firestore
 import json
-
+#Cloud function for sign up
 def hello_world(request):
     """Responds to any HTTP request.
     Args:

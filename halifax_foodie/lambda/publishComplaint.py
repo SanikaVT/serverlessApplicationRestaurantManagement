@@ -4,7 +4,7 @@
 from google.cloud import pubsub_v1
 import json
 import os
-
+#publish message
 def publish_message(request):
     """Responds to any HTTP request.
     Args:

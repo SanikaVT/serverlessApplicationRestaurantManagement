@@ -4,13 +4,15 @@ import "./PolarityComponent.scss";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import Plot from "react-plotly.js";
-
+//This component shows polarity for all reviews (Good, Bad, Neutral)
 export default function PolarityComponent() {
+      //Reference: https://reactjs.org/docs/hooks-state.html
     const [positive, setPositive] = useState(0);
     const [negative, setNegative] = useState(0);
     const [neutral, setNeutral] = useState(0);
     const [polarity, setPolarity] = useState("");
 
+  //Reference: https://reactjs.org/docs/hooks-effect.html
 
     useEffect(() => {
         getPolarity().then(() => {
@@ -31,9 +33,7 @@ export default function PolarityComponent() {
 
                 {
                     headers: {
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Credentials": "true",
+                        "Content-Type": "application/json"
                     },
                 }
             )
@@ -65,9 +65,12 @@ export default function PolarityComponent() {
     return (
         <div className="row justify-content-center mt-4">
             <div className="col-md-6">
+            {/* Reference: https://react-bootstrap.github.io/components/cards/ */}
+
                 <Card>
                     <Card.Header>Reviews Polarity</Card.Header>
                     <Card.Body>
+                        {/* Reference: https://plotly.com/javascript/react/ */}
                         <Plot
                             data={[
                                 {

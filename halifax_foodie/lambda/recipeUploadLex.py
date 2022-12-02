@@ -25,7 +25,7 @@ def lambda_handler(event, context):
                     })
             
             return addToDynamo(restId,recTitle,recIng,recCost,dynDb)
-    
+# add recipe to dynamo
 def addToDynamo(restId, recTitle,recIng,recCost,dynDb):
     ranInt = random.randint(10, 100000)
     if restId!='-1':
@@ -38,7 +38,7 @@ def addToDynamo(restId, recTitle,recIng,recCost,dynDb):
                 'ingredient':recIng,
                 'price': recCost
                 })
-            
+        # return response to lex
         return {"dialogAction":{"type":"Close","fulfillmentState": "Fulfilled","message": { "contentType": "PlainText", "content": "Recipe uploaded. Thanks!"}}}
     
     
