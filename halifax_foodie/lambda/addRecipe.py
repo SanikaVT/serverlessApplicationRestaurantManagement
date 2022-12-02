@@ -1,7 +1,5 @@
 import json
 import boto3
-import random
-import re
 def lambda_handler(event, context):
     if (event):
         print(event)
