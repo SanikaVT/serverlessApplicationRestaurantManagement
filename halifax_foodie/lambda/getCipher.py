@@ -6,24 +6,25 @@ from boto3.dynamodb.conditions import Attr
 dynamodb = boto3.resource('dynamodb')
     
 def lambda_handler(event, context):
-    ev=event
-    username = ev['username']
-    cipher =  ev['cipher']
-    table = dynamodb.Table('userDetails')
-    message = ""
-    data =  table.scan(
-        FilterExpression=Attr('userID').eq(username)
+    uname = event['username']
+    cipherText =  event['cipher']
+    userTable = dynamodb.Table('userDetails')
+    msg = ""
+    myTable =  userTable.scan(
+        FilterExpression=Attr('userID').eq(uname)
         )
-    userData = data['Items']
-    print(data)
-    for item in userData:
-        if item['userID']== username:
-            if item['cipher'] == cipher:
-                message = 'User Verified'
+    uInfo = myTable['Items']
+    return verifyUser
+    
+def verifyUser(uInfo, uname, cipherText):
+    for item in uInfo:
+        if item['userID']== uname:
+            if item['cipher'] == cipherText:
+                msg = 'User Verified'
             else:
-                message = 'User Not Verified'
+                msg = 'User Not Verified'
    
-    response = [{'message':message}]
+    result = [{'message':msg}]
     return {
         'statusCode':200 ,
         'headers': {
@@ -31,5 +32,5 @@ def lambda_handler(event, context):
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
                 },
-        'body':json.dumps(response)
+        'body':json.dumps(result)
     }

@@ -2,24 +2,28 @@ import json
 import boto3
 
 def lambda_handler(event, context):
-    dynamo_db = boto3.resource('dynamodb')
-    table = dynamo_db.Table('ratings')
+    dynmo = boto3.resource('dynamodb')
+    rateTable = dynmo.Table('ratings')
 
-    users_feedback_polarity = []
-    result = table.scan()
+    polarityCheck = []
+    rateTable = rateTable.scan()
     
-    if result['Count'] == 0:
-        response = {"status": True,"message": "No user feedback available","data": None}
+    if rateTable['Count'] == 0:
+        resultResponse = {"status": True,"message": "No user feedback available","data": None}
     else:
-        comprehend = boto3.client("comprehend")
-        for i in range(result['Count']):            
-            result_dict = {}
-            feedback = result['Items'][i]['review']
-            response = comprehend.detect_sentiment(Text = feedback, LanguageCode = "en")
-            polarity = response['Sentiment']            
-            result_dict['Feedback'] = feedback
-            result_dict['Polarity'] = polarity
-            users_feedback_polarity.append(result_dict)
+        resultResponse = checkPolarity(rateTable,polarityCheck)
+    return resultResponse
+
+def checkPolarity(rateTable,polarityCheck):
+    comprehend = boto3.client("comprehend")
+    for i in range(rateTable['Count']):            
+        dictRes = {}
+        review = rateTable['Items'][i]['review']
+        resultResponse = comprehend.detect_sentiment(Text = review, LanguageCode = "en")
+        polarCheck = resultResponse['Sentiment']            
+        dictRes['Feedback'] = review
+        dictRes['Polarity'] = polarCheck
+        polarityCheck.append(dictRes)
         
-        response = {"status": True,"message": "Polarity of feedback","data": users_feedback_polarity}
-    return response
+    resultResponse = {"status": True,"message": "Polarity","data": polarityCheck}
+    

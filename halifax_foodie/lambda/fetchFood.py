@@ -1,33 +1,34 @@
 import boto3
 import json
-from boto3.dynamodb.conditions import Attr
 def lambda_handler(event, context):
     if (event):
-        db = boto3.resource('dynamodb')
-        foodTable = db.Table("Food")
-        foodDataList = []
-        idlist = []
-        food = foodTable.scan()
+        dyndb = boto3.resource('dynamodb')
+        fTable = dyndb.Table("Food")
+        listFood = []
+        foodtablelist = fTable.scan()        
+        foditems = foodtablelist['Items']
+        return returnFromDynamo(foditems,listFood)
         
-        foodData = food['Items']
-        for fooditem in foodData:
-            fid = fooditem['foodId']
-            fprice=fooditem['price']
-            FoodData = {
-                "foodName": fooditem['name'],
-                "foodId":str(fid),
-                "price":str(fprice),
-                "ingredient":fooditem['ingredient']
+def returnFromDynamo(foditems,listFood):
+    for fitem in foditems:
+            id = fitem['foodId']
+            cost=fitem['price']
+            food = {
+                "foodName": fitem['name'],
+                "foodId":str(id),
+                "price":str(cost),
+                "ingredient":fitem['ingredient']
             }
-            foodDataList.append(FoodData)
+            
+            listFood.append(food)
                 
-        response = [{'food':foodDataList}]
-        return {
+    result = [{'food':listFood}]
+    return {
             'statusCode':200 ,
             'headers': {
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
                 },
-            'body':json.dumps(response)
+            'body':json.dumps(result)
             }
