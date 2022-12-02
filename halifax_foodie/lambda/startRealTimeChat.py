@@ -1,3 +1,6 @@
+# References
+# https://firebase.google.com/docs/firestore/manage-data/add-data#python
+
 import base64
 import json
 from google.cloud import firestore
@@ -18,10 +21,14 @@ def hello_pubsub(event, context):
   text = message["text"]
 
   db = firestore.Client()
-  doc_ref = db.collection(u'messages').document(username)
-  doc_ref.set({
+  doc_messages = db.collection(u'messages').document(username)
+  doc_messages.set({
     u'createdAt' : datetime.now(),
     u'sentBy': username,
     u'sentTo': receiver,
     u'text': text
   })
+  doc_users = db.collection(u'users').document(username)
+  doc_users.set({
+    u'hasComplaint' : True
+  },merge = True)

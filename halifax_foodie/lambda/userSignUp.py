@@ -1,3 +1,6 @@
+# References:
+# https://firebase.google.com/docs/firestore/manage-data/add-data#python
+
 from google.cloud import firestore
 import json
 

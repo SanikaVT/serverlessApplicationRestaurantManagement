@@ -1,3 +1,7 @@
+# References:
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Table.scan
+# https://googleapis.dev/python/google-auth/1.15.0/reference/google.auth.transport.urllib3.html
+
 import json
 import boto3
 import urllib3

@@ -1,3 +1,6 @@
+# References:
+# https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Client.put_item
+
 import boto3
 import json
 def lambda_handler(event, context):
@@ -6,11 +9,11 @@ def lambda_handler(event, context):
         fTable = dyndb.Table("Food")
         listFood = []
         foodtablelist = fTable.scan()        
-        foditems = foodtablelist['Items']
-        return returnFromDynamo(foditems,listFood)
+        fooditems = foodtablelist['Items']
+        return returnFromDynamo(fooditems,listFood)
         
-def returnFromDynamo(foditems,listFood):
-    for fitem in foditems:
+def returnFromDynamo(fooditems,listFood):
+    for fitem in fooditems:
             id = fitem['foodId']
             cost=fitem['price']
             food = {
