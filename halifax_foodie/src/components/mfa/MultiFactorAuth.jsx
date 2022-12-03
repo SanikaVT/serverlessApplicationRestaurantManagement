@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import db from "../../firebase";
 import firebase from "firebase/app";
+import { Button } from "react-bootstrap";
 
 export default function MultiFactor() {
   const histNavigate = useHistory();
@@ -14,7 +15,6 @@ export default function MultiFactor() {
   const secondFactorQuestion = "What is Your favorite color?";
   const [currentUsrRole, setCurrentUsrRole] = useState("customer");
   const [ques, setQues] = useState();
-  const [verified, setVerified] = useState();
   const [generatedCipher, setGeneratedCipher] = useState("");
   var firebaseUsr;
   useEffect(async () => {
@@ -23,7 +23,7 @@ export default function MultiFactor() {
     //Reference: https://docs.amplify.aws/lib/auth/manageusers/q/platform/js/
       //Reference: https://www.robinwieruch.de/local-storage-react/
   //Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
-
+    console.log("called useEff")
     !JSON.parse(localStorage.getItem("isVerifiedQues")) &&
       (await Auth.currentUserPoolUser().then((obj) => {
         const regUser = {
@@ -42,7 +42,7 @@ export default function MultiFactor() {
     const userInfo = await firebaseUsers
       .where("username", "==", currUSr.username)
       .get();
-
+    
     userInfo.forEach((doc) => {
       firebaseUsr = doc.data();
     });
@@ -142,7 +142,8 @@ export default function MultiFactor() {
             alert(message);
             localStorage.setItem("isVerifiedQues", false);
           } else {
-            setVerified(verified);
+            console.log("3Factor login")
+
             histNavigate.push("/");
             //Reference: https://www.w3schools.com/jsref/met_loc_reload.asp#:~:text=Window%20location.reload()&text=The%20reload()%20method%20reloads,reload%20button%20in%20your%20browser.
             window.location.reload();
@@ -277,13 +278,14 @@ export default function MultiFactor() {
                         placeholder="Enter Value"
                       />
                     </div>
+                    <div>
                     <div className="mb-3"></div>
                     <button className="btn btn-success" onClick={generateCipherText}>
                       Generate Cipher
                     </button>
                     <div className="mb-2"></div>
                     <span>{generatedCipher}</span>
-                  </div>
+                  </div></div>
                 )}
               </div>
 
