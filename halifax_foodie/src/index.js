@@ -18,23 +18,18 @@ ReactDOM.render(
     <App />
     {/* Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse */}
     {/* Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator */}
-
-    {JSON.parse(localStorage.getItem("isChat")) == false ? (
-      //Reference: https://www.npmjs.com/package/react-lex/v/1.0.0
-      <LexChat
-        botName="myBot"
-        IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
-        placeholder="Placeholder text"
-        backgroundColor="white"
-        height={450}
-        region="us-east-1"
-        headerText="HalifaxFoodie Help"
-        headerStyle={{ backgroundColor: "#873e23", fontSize: "40px" }}
-        greeting={"Hello, how can I help you?"}
-      />
-    ) : (
-      <div></div>
-    )}
+    {/* //Reference: https://www.npmjs.com/package/react-lex/v/1.0.0 */}
+    <LexChat
+      botName="myBot"
+      IdentityPoolId="us-east-1:eceae3ad-6ac0-4b26-8bd4-37146d11c9d0"
+      placeholder="Placeholder text"
+      backgroundColor="white"
+      height={450}
+      region="us-east-1"
+      headerText="HalifaxFoodie Help"
+      headerStyle={{ backgroundColor: "#873e23", fontSize: "40px" }}
+      greeting={"Hello, how can I help you?"}
+    />
   </React.StrictMode>,
   document.getElementById("root")
 );
