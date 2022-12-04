@@ -18,16 +18,15 @@ export default function DashboardComp() {
     currentUsrInfo();
   }, []);
 
-  /*DO NOT REMOVE THIS COMMENTED CODE*/
 
-  // useEffect(() => {
-  //   if(currentUsrRole!="owner"){
-  //   const interval = setInterval(() => {
-  //     getCheck();
-  //   }, 10000);
-  //   return () => clearInterval(interval);
-  // }
-  // },[]);
+  useEffect(() => {
+    if(currentUsrRole!="owner"){
+    const interval = setInterval(() => {
+      getCheck();
+    }, 10000);
+    return () => clearInterval(interval);
+  }
+  },[]);
 
   async function getCheck() {
     //Reference: https://axios-http.com/docs/post_example
